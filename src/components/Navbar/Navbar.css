@@ -1,0 +1,18 @@
+.navbar {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.navbar-content {
+  display: flex;
+}
+.navbar-left-side {
+  font-size: large;
+  font-weight: bold;
+}
+.navbar-middle {
+  margin-left: 2rem;
+}

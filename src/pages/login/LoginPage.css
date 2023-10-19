@@ -1,0 +1,112 @@
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+.login-container {
+  margin-top: 8rem;
+  width: 35%;
+  height: 400px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 10px;
+  align-items: center;
+}
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  margin-top: 10px;
+}
+.login-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-container__form {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  width: 60%;
+  padding: 10px;
+}
+.login-form {
+  width: 100%;
+}
+.login-input-div {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px;
+  margin-top: 15px;
+}
+.login-input-div:hover {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+.login-input-div:focus-within {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
+    rgba(0, 0, 0, 0.3) 0px 30px 60px -30px,
+    rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.login-input {
+  width: 80%;
+  height: 30px;
+  border-radius: 6px;
+  border: none;
+}
+.login-input:focus {
+  outline: none;
+}
+.login-button {
+  background-color: #108a00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #16a503;
+}
+
+.login-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+.login-footer {
+  margin-top: 20px;
+}
+.login-footer-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-hr {
+  border: none;
+  width: 10%;
+  height: 1.5px;
+  background-color: #8f8e8e;
+}
+
+.login-footer-button {
+  margin-top: 15px;
+  border: 2px solid #108a00;
+  color: #108a00;
+  border-radius: 14px;
+  padding: 10px 50px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
