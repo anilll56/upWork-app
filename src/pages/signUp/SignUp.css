@@ -1,0 +1,52 @@
+.sign-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.sign-up-container {
+  margin-top: 8rem;
+  width: 650px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+}
+.sign-up-header {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  margin-top: 10px;
+}
+.sign-up-checkboxs {
+  margin: 10px;
+  width: 50%;
+  margin: auto;
+  display: flex;
+  justify-content: space-around;
+}
+.form-name {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.form-navbar-input-cont {
+  width: 45%;
+  margin: 5px;
+}
+.sign-up-input-cont {
+  margin: 5px;
+}
+.ant-input:hover {
+  border-color: green;
+}
+.ant-input:focus {
+  border-color: green;
+}
+.sign-up-button {
+  margin-top: 20px;
+  background-color: #108a00;
+  border-radius: 12px;
+}
+.sign-up-button:hover {
+  background-color: #16ab03 !important;
+}

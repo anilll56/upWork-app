@@ -1,18 +1,43 @@
 .navbar {
-  width: 100%;
   border-bottom: 1px solid #ccc;
   height: 50px;
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 8px;
 }
 .navbar-content {
+  height: 100%;
+  width: 100%;
   display: flex;
 }
 .navbar-left-side {
   font-size: large;
   font-weight: bold;
+  width: 20%;
+
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 .navbar-middle {
-  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  width: 60%;
+}
+.navbar-right-side {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: flex-end;
+}
+.navbar-middle-dropdown-content {
+  margin-left: 10px;
+}
+.navbar-personel-info {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  margin-right: 20px;
 }
