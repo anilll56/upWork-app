@@ -50,3 +50,17 @@
 .sign-up-button:hover {
   background-color: #16ab03 !important;
 }
+.sign-up-price-cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  width: 60%;
+  margin: 5px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.sign-up-price-cont:hover {
+  border-color: #16ab03;
+}

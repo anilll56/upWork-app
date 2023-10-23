@@ -4,9 +4,18 @@ import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Navbar() {
   const navigate = useNavigate();
+  const person = useSelector((state) => state.person);
+  console.log(person.personInfo);
+
+  const LogOut = () => {
+    localStorage.removeItem("token", "user");
+    navigate("/login");
+  };
+
   const items = [
     {
       key: "1",
@@ -41,7 +50,7 @@ function Navbar() {
       label: (
         <div
           onClick={() => {
-            navigate("/profile");
+            navigate("/home/profile");
           }}
         >
           <div>Profile</div>
@@ -60,7 +69,11 @@ function Navbar() {
     {
       key: "3",
       label: (
-        <div>
+        <div
+          onClick={() => {
+            LogOut();
+          }}
+        >
           <div>Log out</div>
         </div>
       ),
@@ -120,7 +133,7 @@ function Navbar() {
             >
               <a onClick={(e) => e.preventDefault()}>
                 <Space>
-                  Anıl
+                  {person?.name}
                   <AiOutlineUser size={30} />
                 </Space>
               </a>

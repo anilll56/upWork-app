@@ -1,11 +1,28 @@
-import { Button, Cascader, Checkbox, Form, Input, Select } from "antd";
+import { Button, Cascader, Checkbox, Form, Input, Rate, Select } from "antd";
 import React, { useState } from "react";
 import "./SignUp.css";
+import { useNavigate } from "react-router-dom";
+import { SignupfreelancerUser } from "../../api/HandleApi";
 
 function SignUp() {
-  const [userType, setUserType] = useState("client");
+  const [userType, setUserType] = useState("freelancer");
+  const [rating, setRating] = useState(3);
+  const navigave = useNavigate();
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
+  };
+  console.log(rating);
+  const HnadleRatingChange = (event) => {
+    setRating(event);
+  };
+  let name = "Anıl";
+  let mail = "aniltan33322@hotmail.com";
+  let password = "anil11";
+  let talent = "React";
+  let price = "20";
+
+  const handleSubmit = () => {
+    SignupfreelancerUser(name, mail, password, talent, price);
   };
 
   const optionsNames = [
@@ -104,9 +121,15 @@ function SignUp() {
                 style={{
                   width: "100%",
                 }}
-                placeholder="Please select"
+                placeholder="Select your Skills"
                 options={options}
               />
+            </div>
+          )}
+          {userType === "freelancer" && (
+            <div className="sign-up-price-cont">
+              <div>Choose your price</div>
+              <Rate value={rating} onChange={HnadleRatingChange} />
             </div>
           )}
           <Button
