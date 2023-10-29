@@ -1,26 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Navbar.css";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
-import { Dropdown, Space } from "antd";
+import { Dropdown, Space, Modal, Input, Button } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 function Navbar() {
   const navigate = useNavigate();
-  const person = useSelector((state) => state.person);
-  console.log(person.personInfo);
+  const user = useSelector((state) => state.person.person.personInfo);
+  const [openModal, setOpenModal] = useState(false);
 
   const LogOut = () => {
     localStorage.removeItem("token", "user");
     navigate("/login");
   };
+  const createJob = () => {};
 
   const items = [
     {
       key: "1",
       label: (
-        <div>
+        <div
+          onClick={() => {
+            setOpenModal(true);
+          }}
+        >
           <div>post a job and hire a pro</div>
         </div>
       ),
@@ -80,11 +85,43 @@ function Navbar() {
       //   disabled: true,
     },
   ];
+  const findWorksOptions = [
+    {
+      key: "1",
+      label: (
+        <div
+          onClick={() => {
+            navigate("/home/findTalents");
+          }}
+        >
+          <div>Search Freelancer</div>
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <div
+          onClick={() => {
+            navigate("/home/findWorks");
+          }}
+        >
+          <div>Search Job</div>
+        </div>
+      ),
+      //   disabled: true,
+    },
+  ];
 
   return (
     <div className="navbar">
       <div className="navbar-content">
-        <div className="navbar-left-side">
+        <div
+          className="navbar-left-side"
+          onClick={() => {
+            navigate("/home");
+          }}
+        >
           <h2>Upwork</h2>
         </div>
         <div className="navbar-middle">
@@ -107,7 +144,7 @@ function Navbar() {
             <Dropdown
               menu={{
                 style: {},
-                items,
+                items: findWorksOptions,
               }}
             >
               <a onClick={(e) => e.preventDefault()}>
@@ -133,7 +170,7 @@ function Navbar() {
             >
               <a onClick={(e) => e.preventDefault()}>
                 <Space>
-                  {person?.name}
+                  {user?.user?.name}
                   <AiOutlineUser size={30} />
                 </Space>
               </a>
@@ -141,6 +178,21 @@ function Navbar() {
           </div>
         </div>
       </div>
+      <Modal
+        title="update job"
+        open={openModal}
+        onCancel={() => {
+          setOpenModal(false);
+        }}
+        okButtonProps={{ style: { display: "none" } }}
+        cancelButtonProps={{ style: { display: "none" } }}
+      >
+        <Input placeholder="Job title" />
+        <Input placeholder="Job details" />
+        <Input placeholder="Job talents" />
+        <Input placeholder="Job price" />
+        <Button type="primary">Update</Button>
+      </Modal>
     </div>
   );
 }

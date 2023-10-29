@@ -1,0 +1,35 @@
+.card-table-job-title {
+  display: flex;
+  padding: 5px;
+}
+.card-table-details {
+  word-wrap: break-word;
+  width: 100%;
+}
+.card-table-status {
+  margin: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+.card-table-button {
+  margin: 5px;
+  display: flex;
+  justify-content: flex-end;
+}
+.card-table-price {
+  margin: 5px;
+  display: flex;
+}
+.card-table-change-job-details {
+  display: flex;
+}
+.card-table-navbar {
+  display: flex;
+  justify-content: space-between;
+}
+.update-job-input {
+  margin: 5px;
+}
+.update-job-button {
+  margin: 5px;
+}

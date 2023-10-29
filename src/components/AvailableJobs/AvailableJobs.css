@@ -1,0 +1,12 @@
+.available-jobs-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+.available-jobs-title {
+  display: flex;
+  margin-left: 1rem;
+  padding: 10px;
+  font-size: 25px;
+}

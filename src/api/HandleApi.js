@@ -5,9 +5,9 @@ const LoginfreelancerUser = async (email, password) => {
   const response = await axios.post(`${url}/freelancerUserlogin`, {
     email: email,
     password: password,
+    remember: true,
   });
   if (response.data) {
-    debugger;
     localStorage.setItem("token", response.data.token);
     localStorage.setItem("user", JSON.stringify(response.data[0]));
     return response.data[0];
@@ -23,8 +23,7 @@ const SignupfreelancerUser = async (name, email, password, talent, price) => {
     price: price,
   });
   if (response.data) {
-    debugger;
-    localStorage.setItem("token", response.data.token);
+    console.log("başarıyla kayıt oldunuz");
     localStorage.setItem("user", JSON.stringify(response.data[0]));
     return response.data[0];
   }
@@ -39,4 +38,31 @@ const SignupClientUserRegister = async (name, email, password) => {
   return response.data[0];
 };
 
-export { LoginfreelancerUser, SignupfreelancerUser, SignupClientUserRegister };
+const Logout = async () => {
+  const response = await axios.post(`${url}/logout`);
+  return response.data;
+};
+const getTheFreelancerJob = async () => {
+  const response = await axios.get(`${url}/getTheFreelancerJob`);
+  return response.data;
+};
+
+const getClientJobs = async () => {
+  const response = await axios.get(`${url}/getTheClientJob`);
+  return response.data;
+};
+
+const getTheFreelancerJobFilter = async (filter) => {
+  const response = await axios.post(`${url}/getTheFreelancerJobFilter`, {
+    filter: filter,
+  });
+  return response.data;
+};
+
+export {
+  LoginfreelancerUser,
+  SignupfreelancerUser,
+  SignupClientUserRegister,
+  getClientJobs,
+  getTheFreelancerJob,
+};

@@ -2,12 +2,26 @@ import { Button, Cascader, Checkbox, Form, Input, Rate, Select } from "antd";
 import React, { useState } from "react";
 import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
-import { SignupfreelancerUser } from "../../api/HandleApi";
+import {
+  SignupClientUserRegister,
+  SignupfreelancerUser,
+} from "../../api/HandleApi";
+import { BiChevronLeft } from "react-icons/bi";
+import { useSelector } from "react-redux";
 
 function SignUp() {
   const [userType, setUserType] = useState("freelancer");
   const [rating, setRating] = useState(3);
   const navigave = useNavigate();
+  const [signUpInputs, setSignUpInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    skills: [],
+    price: "",
+  });
+  console.log(signUpInputs, "signUpInputs");
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
@@ -16,34 +30,33 @@ function SignUp() {
     setRating(event);
   };
   let name = "Anıl";
-  let mail = "aniltan33322@hotmail.com";
+  let mail = "deddd111@hotmail.com";
   let password = "anil11";
   let talent = "React";
   let price = "20";
-
-  const handleSubmit = () => {
-    SignupfreelancerUser(name, mail, password, talent, price);
+  const signup = () => {
+    if (signUpInputs.password !== signUpInputs.confirmPassword) {
+      return alert("passwords don't match");
+    } else {
+      if (userType === "client") {
+        SignupClientUserRegister(
+          setSignUpInputs.name,
+          setSignUpInputs.email,
+          setSignUpInputs.password
+        );
+      } else {
+        SignupfreelancerUser(
+          setSignUpInputs.name,
+          setSignUpInputs.mail,
+          setSignUpInputs.password,
+          setSignUpInputs.talent,
+          setSignUpInputs.price
+        );
+      }
+    }
   };
 
-  const optionsNames = [
-    "Web, Mobile & Software Dev",
-    "IT & Networking",
-    "Data Science & Analytics",
-    "Engineering & Architecture",
-    "Design & Creative",
-    "Writing",
-    "Translation",
-    "React",
-    "javaScript",
-    "Node.js",
-    "Angular",
-    "React Native",
-    "Android",
-    "iOS",
-    "Python",
-    "Django",
-    "Flask",
-  ];
+  const optionsNames = useSelector((state) => state.person.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
       value: option,
@@ -84,19 +97,33 @@ function SignUp() {
         >
           <div className="form-name">
             <div className="form-navbar-input-cont">
-              <Input type="text" id="name" placeholder="name" size="large" />
-            </div>
-            <div className="form-navbar-input-cont">
               <Input
                 type="text"
-                id="lastName"
-                placeholder="last name"
+                id="name"
+                placeholder="name"
                 size="large"
+                onChange={(event) => {
+                  setSignUpInputs({
+                    ...signUpInputs,
+                    name: event.target.value,
+                  });
+                }}
               />
             </div>
           </div>
           <div className="sign-up-input-cont">
-            <Input type="email" id="email" placeholder="email" size="large" />
+            <Input
+              type="email"
+              id="email"
+              placeholder="email"
+              size="large"
+              onChange={(event) => {
+                setSignUpInputs({
+                  ...signUpInputs,
+                  email: event.target.value,
+                });
+              }}
+            />
           </div>
           <div className="sign-up-input-cont">
             <Input
@@ -104,13 +131,26 @@ function SignUp() {
               id="password"
               placeholder="password"
               size="large"
+              onChange={(event) => {
+                setSignUpInputs({
+                  ...signUpInputs,
+                  password: event.target.value,
+                });
+              }}
             />
           </div>
           <div className="sign-up-input-cont">
             <Input
+              type="password"
               id="confirmPassword"
               placeholder="confrim password"
               size="large"
+              onChange={(event) => {
+                setSignUpInputs({
+                  ...signUpInputs,
+                  confirmPassword: event.target.value,
+                });
+              }}
             />
           </div>
           {userType === "freelancer" && (
@@ -132,14 +172,31 @@ function SignUp() {
               <Rate value={rating} onChange={HnadleRatingChange} />
             </div>
           )}
-          <Button
-            type="primary"
-            htmlType="submit"
-            size="large"
-            className="sign-up-button"
-          >
-            Sign Up
-          </Button>
+          <div className="buttons-div">
+            <Button
+              className="sign-up-button"
+              size="large"
+              type="primary"
+              htmlType="submit"
+              onClick={() => {
+                navigave("/login");
+              }}
+            >
+              <BiChevronLeft size={30} /> Go Login
+            </Button>
+
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              className="sign-up-button"
+              onClick={() => {
+                signup();
+              }}
+            >
+              Sign Up
+            </Button>
+          </div>
         </Form>
       </div>
     </div>

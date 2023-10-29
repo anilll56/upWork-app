@@ -46,6 +46,9 @@
   margin-top: 20px;
   background-color: #108a00;
   border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .sign-up-button:hover {
   background-color: #16ab03 !important;
@@ -63,4 +66,14 @@
 }
 .sign-up-price-cont:hover {
   border-color: #16ab03;
+}
+.go-login-button {
+  display: flex;
+  background-color: aqua;
+}
+.buttons-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
 }

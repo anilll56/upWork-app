@@ -4,9 +4,9 @@ import { CiUser } from "react-icons/ci";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { LoginfreelancerUser } from "../../api/HandleApi";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { setPerson } from "../../redux/personSlice";
+import { Form } from "antd";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function LoginPage() {
         <div className="login-title">Login to Upwork</div>
         <div className="login-content">
           <div className="login-container__form">
-            <form className="login-form">
+            <Form className="login-form">
               <div className="login-input-div">
                 <CiUser size={20} />
                 <input
@@ -41,15 +41,21 @@ function LoginPage() {
               <div className="login-input-div">
                 <RiLockPasswordFill size={20} />
                 <input
-                  type="text"
+                  type="password"
                   placeholder="Password"
                   className="login-input"
                 />
               </div>
-              <button type="submit" className="login-button">
+              <button
+                type="submit"
+                className="login-button"
+                onClick={() => {
+                  handleSubmit();
+                }}
+              >
                 Login
               </button>
-            </form>
+            </Form>
           </div>
         </div>
         <div className="login-footer">

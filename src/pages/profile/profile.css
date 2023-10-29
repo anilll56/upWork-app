@@ -1,7 +1,18 @@
 .profile {
+  width: 100%;
 }
 .profile-container {
-  width: 50%;
+  display: flex;
 
   margin-top: 3rem;
+  margin-left: 5rem;
+}
+.profile-righth-side {
+  margin-left: 10rem;
+  width: 60%;
+
+  display: flex;
+}
+.change-password-input {
+  margin: 5px;
 }
