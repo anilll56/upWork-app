@@ -26,6 +26,7 @@ export const personSlice = createSlice({
         "Django",
         "Flask",
       ],
+      myJobs: [],
     },
   },
   reducers: {
@@ -35,9 +36,12 @@ export const personSlice = createSlice({
     setAuthenticated: (state, action) => {
       state.person.authenticated = action.payload;
     },
+    setMyJobs: (state, action) => {
+      state.person.myJobs = action.payload;
+    },
   },
 });
 
-export const { setPerson, setAuthenticated } = personSlice.actions;
+export const { setPerson, setAuthenticated, setMyJobs } = personSlice.actions;
 
 export default personSlice.reducer;

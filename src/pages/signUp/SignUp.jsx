@@ -2,10 +2,7 @@ import { Button, Cascader, Checkbox, Form, Input, Rate, Select } from "antd";
 import React, { useState } from "react";
 import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
-import {
-  SignupClientUserRegister,
-  SignupfreelancerUser,
-} from "../../api/HandleApi";
+import { SignupClientUser, SignupfreelancerUser } from "../../api/HandleApi";
 import { BiChevronLeft } from "react-icons/bi";
 import { useSelector } from "react-redux";
 
@@ -21,11 +18,10 @@ function SignUp() {
     skills: [],
     price: "",
   });
-  console.log(signUpInputs, "signUpInputs");
+  // console.log(signUpInputs, "signUpInputs");
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
-  console.log(rating);
   const HnadleRatingChange = (event) => {
     setRating(event);
   };
@@ -39,18 +35,20 @@ function SignUp() {
       return alert("passwords don't match");
     } else {
       if (userType === "client") {
-        SignupClientUserRegister(
-          setSignUpInputs.name,
-          setSignUpInputs.email,
-          setSignUpInputs.password
-        );
+        SignupClientUser(
+          signUpInputs.name,
+          signUpInputs.email,
+          signUpInputs.password
+        ).then((res) => {
+          navigave("/login");
+        });
       } else {
         SignupfreelancerUser(
-          setSignUpInputs.name,
-          setSignUpInputs.mail,
-          setSignUpInputs.password,
-          setSignUpInputs.talent,
-          setSignUpInputs.price
+          signUpInputs.name,
+          signUpInputs.email,
+          signUpInputs.password,
+          signUpInputs.skills,
+          signUpInputs.price
         );
       }
     }

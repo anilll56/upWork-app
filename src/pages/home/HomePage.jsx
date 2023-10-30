@@ -14,7 +14,7 @@ function HomePage() {
       SetFreelancerJobs(res.data);
     });
   }, []);
-  console.log(Clientjobs, "HomePage");
+
   return (
     <div>
       <div className="home-jobs-title ">Aviable Jobs for freelancer user</div>

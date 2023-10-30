@@ -7,24 +7,38 @@ import SignUp from "./pages/signUp/SignUp";
 import Profile from "./pages/profile/Profile";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setAuthenticated, setPerson } from "./redux/personSlice";
+import { setAuthenticated, setPerson, setMyJobs } from "./redux/personSlice";
 import HomePage from "./pages/home/HomePage";
 import FindTalents from "./pages/FindTalents/FindTalents";
 import FindWorks from "./pages/FindWorks/FindWorks";
+import { getClientJobs } from "./api/HandleApi";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user"));
   const authenticated = useSelector(
     (state) => state.person.person.authenticated
   );
-  console.log(authenticated);
+  // const myjobs = useSelector((state) => state.person.person.myjobs);
+  // console.log(myjobs, "myjobs11");
+  const fetchClientJobs = async () => {
+    try {
+      const response = await getClientJobs(user.email);
+      localStorage.setItem("Myjobs", JSON.stringify(response.data));
+      dispatch(setMyJobs(response.data));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    if (token && user) {
+    fetchClientJobs();
+    if (user) {
       dispatch(setPerson({ user }));
+
       console.log("kullanıcı var", user);
       dispatch(setAuthenticated(true));
     } else {
@@ -33,10 +47,6 @@ function App() {
       dispatch(setAuthenticated(false));
       navigate("/login");
     }
-  }, [authenticated]);
-
-  useEffect(() => {
-    console.log(authenticated);
   }, [authenticated]);
 
   return (

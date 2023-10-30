@@ -14,10 +14,15 @@ import {
 } from "antd";
 import { useSelector } from "react-redux";
 import { AiOutlineUser } from "react-icons/ai";
+import AvailableJobsCont from "../../components/AvailableJobs/AvailableJobsCont";
+import CardTable from "../../components/Card/CardTable";
+import AddCardTable from "../../components/Card/AddCardTable";
 
 function Profile() {
   const user = useSelector((state) => state.person.person.personInfo);
-  console.log(user, "Profile  user");
+  const userJobs = useSelector((state) => state.person.person.myJobs.jobs);
+  const Myjobs = localStorage.getItem("Myjobs");
+  const parsedDataMyJob = JSON.parse(Myjobs);
   const [userType, setUserType] = useState("freelancer");
   const [openModal, setOpenModal] = useState(false);
   const [modalInputValue, setModalInputValue] = useState({
@@ -49,74 +54,84 @@ function Profile() {
   return (
     <div className="profile">
       <div className="profile-container">
-        <div>
-          <Avatar size={64} src={<AiOutlineUser color="grey" size={64} />} />
-        </div>
-        <div>
-          <Form
-            name="basic"
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 16,
-            }}
-            style={{
-              maxWidth: 600,
-            }}
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item label={"Username"} name={"Username"}>
-              <Input placeholder={user?.user?.name || ""} />
-            </Form.Item>
-            <Form.Item label="Email" name="email">
-              <Input placeholder={user?.user?.email || ""} />
-            </Form.Item>
-            {user.type === "freelancer" && (
-              <>
-                <Form.Item label="Price" name="Price">
-                  <Input />
-                </Form.Item>
-
-                <Form.Item label="Talent" name="Talent">
-                  <Select
-                    mode="multiple"
-                    allowClear
-                    style={{
-                      width: "100%",
-                    }}
-                    placeholder="Please select"
-                    options={options}
-                  />
-                </Form.Item>
-              </>
-            )}
-            <Form.Item
+        <div className="profile-left-side">
+          <div>
+            <Avatar size={64} src={<AiOutlineUser color="grey" size={64} />} />
+          </div>
+          <div>
+            <Form
+              name="basic"
+              labelCol={{
+                span: 8,
+              }}
               wrapperCol={{
-                offset: 8,
                 span: 16,
               }}
+              style={{
+                maxWidth: 600,
+              }}
+              initialValues={{
+                remember: true,
+              }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Button type="primary" htmlType="submit">
-                Update
-              </Button>
-            </Form.Item>
-          </Form>
-          <div
-            onClick={() => {
-              setOpenModal(true);
-            }}
-            className="profile-change-password"
-          >
-            Change Password
+              <Form.Item label={"Username"} name={"Username"}>
+                <Input placeholder={user?.user?.name || ""} />
+              </Form.Item>
+              <Form.Item label="Email" name="email">
+                <Input placeholder={user?.user?.email || ""} />
+              </Form.Item>
+              {user.type === "freelancer" && (
+                <>
+                  <Form.Item label="Price" name="Price">
+                    <Input />
+                  </Form.Item>
+
+                  <Form.Item label="Talent" name="Talent">
+                    <Select
+                      mode="multiple"
+                      allowClear
+                      style={{
+                        width: "100%",
+                      }}
+                      placeholder="Please select"
+                      options={options}
+                    />
+                  </Form.Item>
+                </>
+              )}
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Update
+                </Button>
+              </Form.Item>
+            </Form>
+            <div
+              onClick={() => {
+                setOpenModal(true);
+              }}
+              className="profile-change-password"
+            >
+              Change Password
+            </div>
           </div>
         </div>
-        <div className="profile-righth-side"></div>
+
+        <div className="profile-righth-side">
+          <div className="profile-righth-side-container">
+            {parsedDataMyJob && <AvailableJobsCont jobs={parsedDataMyJob} />}
+          </div>
+          <div>
+            <AddCardTable />
+          </div>
+        </div>
         <Modal
           title="Change Password"
           open={openModal}

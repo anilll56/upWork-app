@@ -1,9 +1,42 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, Input } from "antd";
+import { Card, Button, Modal, Input, Select } from "antd";
 import { GrAdd } from "react-icons/gr";
+import "./Card.css";
+import { useSelector } from "react-redux";
+import { AddClientJob } from "../../api/HandleApi";
 
 function AddCardTable() {
   const [openModal, setOpenModal] = useState(false);
+  const email = useSelector(
+    (state) => state?.person?.person?.personInfo?.user?.email
+  );
+  const [addCardInputs, setAddCardInputs] = useState({
+    jobTitle: "",
+    email: email,
+    jobDetails: "",
+    jobTalents: "",
+    jobPrice: "",
+  });
+  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const options = optionsNames.map((option) => {
+    return {
+      value: option,
+      label: option,
+    };
+  });
+  const addNewCard = () => {
+    AddClientJob(
+      addCardInputs.jobTitle,
+      addCardInputs.email,
+      addCardInputs.jobDetails,
+      addCardInputs.jobTalents,
+      addCardInputs.jobPrice
+    ).then((res) => {
+      setOpenModal(false);
+      window.location.reload();
+    });
+  };
+
   return (
     <div>
       <Card
@@ -26,11 +59,61 @@ function AddCardTable() {
         okButtonProps={{ style: { display: "none" } }}
         cancelButtonProps={{ style: { display: "none" } }}
       >
-        <Input placeholder="Job title" />
-        <Input placeholder="Job details" />
-        <Input placeholder="Job talents" />
-        <Input placeholder="Job price" />
-        <Button type="primary">Add</Button>
+        <Input
+          placeholder="Job title"
+          className="add-job-input"
+          onChange={(e) => {
+            setAddCardInputs({
+              ...addCardInputs,
+              jobTitle: e.target.value,
+            });
+          }}
+        />
+        <Input
+          placeholder="Job details"
+          className="add-job-input"
+          onChange={(e) => {
+            setAddCardInputs({
+              ...addCardInputs,
+              jobDetails: e.target.value,
+            });
+          }}
+        />
+        <Select
+          mode="multiple"
+          allowClear
+          style={{
+            width: "100%",
+          }}
+          className="add-job-input"
+          placeholder="Please select"
+          options={options}
+          onChange={(value) => {
+            setAddCardInputs({
+              ...addCardInputs,
+              jobTalents: value,
+            });
+          }}
+        />
+        <Input
+          placeholder="Job price"
+          className="add-job-input"
+          onChange={(e) => {
+            setAddCardInputs({
+              ...addCardInputs,
+              jobPrice: e.target.value,
+            });
+          }}
+        />
+        <Button
+          type="primary"
+          className="add-job-input"
+          onClick={() => {
+            addNewCard();
+          }}
+        >
+          Add
+        </Button>
       </Modal>
     </div>
   );

@@ -3,16 +3,20 @@
 }
 .profile-container {
   display: flex;
-
-  margin-top: 3rem;
-  margin-left: 5rem;
+  margin-top: 2rem;
+  margin-left: 2rem;
 }
 .profile-righth-side {
-  margin-left: 10rem;
-  width: 60%;
-
-  display: flex;
+  width: 75%;
+  padding: 5px;
+}
+.profile-righth-side-container {
+  width: 100%;
 }
 .change-password-input {
   margin: 5px;
+}
+.profile-left-side {
+  display: flex;
+  width: 20%;
 }
