@@ -139,13 +139,6 @@ function LoginPage() {
               Sign Up
             </button>
           </div>
-          <button
-            onClick={() => {
-              SignUp();
-            }}
-          >
-            deneme
-          </button>
         </div>
       </div>
     </div>

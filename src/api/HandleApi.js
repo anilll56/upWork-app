@@ -36,7 +36,7 @@ const SignupfreelancerUser = async (name, email, password, talent, price) => {
     price: price,
   });
   if (response.data) {
-    console.log("başarıyla kayıt oldunuz");
+    console.log(response.data);
     localStorage.setItem("user", JSON.stringify(response.data[0]));
     localStorage.setItem("jobs", JSON.stringify(response.data[1]));
     return response;
@@ -71,13 +71,24 @@ const getClientJobs = async () => {
 };
 const getTheClientJobByEmail = async (email) => {
   try {
-    debugger;
     const response = await axios.post(`${url}/getTheClientJobByEmail`, {
       email: email,
     });
     return response.data;
   } catch (error) {
     console.error("Hata oluştu:", error);
+    throw error;
+  }
+};
+const getTheFreelancerJobByEmail = async (email) => {
+  try {
+    const response = await axios.post(`${url}/getTheFreelancerJobByEmail`, {
+      email: email,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Hata Detayı:", error.message);
+    console.error("Response Detayı:", error.response);
     throw error;
   }
 };
@@ -89,12 +100,38 @@ const getTheFreelancerJobFilter = async (filter) => {
   return response.data;
 };
 
-const updateTheFreelancerJob = async (id, status) => {
-  const response = await axios.post(`${url}/updateTheFreelancerJob`, {
+const updateTheFreelancerJob = async (
+  id,
+  jobTitle,
+  email,
+  jobDetails,
+  jobTalents,
+  jobPrice
+) => {
+  const response = await axios.post(`${url}/updateFreelancerWork`, {
     id: id,
-    status: status,
+    name: jobTitle || "",
+    email: email || "",
+    "work-type": jobTalents || "",
+    "work-description": jobDetails || "",
+    "work-price": jobPrice || "",
   });
-  return response.data;
+  return console.log(
+    response.data,
+    "response.data",
+    "id",
+    id,
+    "title",
+    jobTitle,
+    "email",
+    email,
+    "details",
+    jobDetails,
+    "talents",
+    jobTalents,
+    "price",
+    jobPrice
+  );
 };
 
 const AddClientJob = async (
@@ -119,8 +156,8 @@ const AddClientJob = async (
 };
 const updateTheClientJob = async (
   id,
-  email,
   jobTitle,
+  email,
   jobDetails,
   jobTalents,
   jobPrice
@@ -136,6 +173,40 @@ const updateTheClientJob = async (
   return response.data;
 };
 
+const deleteTheJob = async (id, jobType) => {
+  if (jobType === "freelancer") {
+    const response = await axios.post(`${url}/deleteFreelancerWork`, {
+      id: id,
+    });
+    return response.data;
+  } else if (jobType === "client") {
+    const response = await axios.post(`${url}/deleteClientWork`, {
+      id: id,
+    });
+    return response.data;
+  }
+};
+const addFreelancerJob = async (
+  jobTitle,
+  email,
+  jobDetails,
+  jobTalents,
+  jobPrice
+) => {
+  const response = await axios.post(`${url}/openFreelancerWork`, {
+    name: jobTitle,
+    email: email,
+    "work-type": jobTalents,
+    "work-description": jobDetails,
+    "work-price": jobPrice,
+  });
+  if (response.data) {
+    return response.data;
+  } else {
+    console.log("error");
+  }
+};
+
 export {
   LoginfreelancerUser,
   SignupfreelancerUser,
@@ -148,4 +219,7 @@ export {
   getTheFreelancerJobFilter,
   updateTheFreelancerJob,
   updateTheClientJob,
+  deleteTheJob,
+  addFreelancerJob,
+  getTheFreelancerJobByEmail,
 };

@@ -23,7 +23,6 @@ function Profile() {
   const userJobs = useSelector((state) => state.person.person.myJobs.jobs);
   const Myjobs = localStorage.getItem("Myjobs");
   const parsedDataMyJob = JSON.parse(Myjobs);
-  const [userType, setUserType] = useState("freelancer");
   const [openModal, setOpenModal] = useState(false);
   const [modalInputValue, setModalInputValue] = useState({
     oldPassword: "",

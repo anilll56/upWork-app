@@ -11,12 +11,17 @@ import { setAuthenticated, setPerson, setMyJobs } from "./redux/personSlice";
 import HomePage from "./pages/home/HomePage";
 import FindTalents from "./pages/FindTalents/FindTalents";
 import FindWorks from "./pages/FindWorks/FindWorks";
-import { getClientJobs } from "./api/HandleApi";
+import {
+  getTheClientJobByEmail,
+  getTheFreelancerJobByEmail,
+} from "./api/HandleApi";
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = JSON.parse(localStorage.getItem("user"));
+  const user = localStorage.getItem("user");
+  const userEmail = JSON.parse(user)?.email;
+  const userRole = JSON.parse(user)?.role;
   const authenticated = useSelector(
     (state) => state.person.person.authenticated
   );
@@ -24,9 +29,15 @@ function App() {
   // console.log(myjobs, "myjobs11");
   const fetchClientJobs = async () => {
     try {
-      const response = await getClientJobs(user.email);
-      localStorage.setItem("Myjobs", JSON.stringify(response.data));
-      dispatch(setMyJobs(response.data));
+      if (userRole === "freelancer") {
+        const response = await getTheFreelancerJobByEmail(userEmail);
+        console.log(response, "response.data");
+        localStorage.setItem("Myjobs", JSON.stringify(response.data));
+      } else if (userRole === "client") {
+        const response = await getTheClientJobByEmail(userEmail);
+        localStorage.setItem("Myjobs", JSON.stringify(response.data));
+        dispatch(setMyJobs(response.data));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -38,8 +49,6 @@ function App() {
     fetchClientJobs();
     if (user) {
       dispatch(setPerson({ user }));
-
-      console.log("kullanıcı var", user);
       dispatch(setAuthenticated(true));
     } else {
       dispatch(setPerson({ user: null }));

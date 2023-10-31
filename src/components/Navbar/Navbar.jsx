@@ -12,7 +12,7 @@ function Navbar() {
   const [openModal, setOpenModal] = useState(false);
 
   const LogOut = () => {
-    localStorage.removeItem("token", "user");
+    localStorage.removeItem("user");
     navigate("/login");
   };
   const createJob = () => {};

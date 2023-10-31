@@ -2,14 +2,23 @@ import React, { useState } from "react";
 import { Card, Button, Modal, Input, Form, Select } from "antd";
 import "./Card.css";
 import { FaRegEdit } from "react-icons/fa";
-import { updateTheClientJob } from "../../api/HandleApi";
+import {
+  updateTheClientJob,
+  updateTheFreelancerJob,
+} from "../../api/HandleApi";
 import { useSelector } from "react-redux";
+import { AiOutlineClose } from "react-icons/ai";
+import { deleteTheJob } from "../../api/HandleApi";
 
 function CardTable({ job }) {
   const [josHired, setJobsHired] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+
+  const user = localStorage.getItem("user");
+  const userEmail = JSON.parse(user).email;
   const optionsNames = useSelector((state) => state.person.person.optionsNames);
   const [selectedItems, setSelectedItems] = useState(job["work-type"]);
+  const UserRole = JSON.parse(user).role;
   const options = optionsNames.map((option) => {
     return {
       value: option,
@@ -23,48 +32,90 @@ function CardTable({ job }) {
     "work-type": selectedItems,
     "work-price": job["work-price"],
   });
-  console.log(updateJobInputs, "updateJobInputs");
 
   const UpdateJob = () => {
-    updateTheClientJob(
-      job.id,
-      job.name,
-      job["work-description"],
-      job["work-type"],
-      job["work-price"]
-    ).then((res) => {
-      setOpenModal(false);
-      window.location.reload();
-    });
+    if (UserRole === "client") {
+      updateTheClientJob(
+        updateJobInputs.id,
+        updateJobInputs.name,
+        updateJobInputs.email,
+        updateJobInputs["work-description"],
+        updateJobInputs["work-type"],
+        updateJobInputs["work-price"]
+      ).then((res) => {
+        setOpenModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      });
+    } else {
+      updateTheFreelancerJob(
+        updateJobInputs.id,
+        updateJobInputs.name, // name alanı
+        updateJobInputs.email, // email alanı
+        updateJobInputs["work-description"], // jobDetails alanı
+        updateJobInputs["work-type"], // jobTalents alanı
+        updateJobInputs["work-price"] // jobPrice alanı
+      ).then((res) => {
+        setOpenModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      });
+    }
   };
+
   return (
     <div>
       <Card
+        extra={
+          userEmail === job.email && (
+            <div
+              onClick={() => {
+                deleteTheJob(job.id, UserRole).then((res) => {
+                  setTimeout(() => {
+                    window.location.reload();
+                  }, 2000);
+                });
+              }}
+            >
+              <AiOutlineClose size={15} />
+            </div>
+          )
+        }
         title={job.name}
         bordered={false}
-        style={{ width: 250, height: 250, margin: "10px" }}
+        style={{
+          width: 300,
+          height: 300,
+          margin: "10px",
+        }}
         hoverable
       >
         <div className="card-table-navbar">
-          <div className="card-table-job-title">{job.name}</div>
-          <div
-            className="card-table-change-job-details"
-            onClick={() => {
-              setOpenModal(true);
-            }}
-          >
-            <FaRegEdit size={15} />
-          </div>
+          {job.email === userEmail && (
+            <div
+              className="card-table-change-job-details"
+              onClick={() => {
+                setOpenModal(true);
+              }}
+            >
+              <FaRegEdit size={15} color="blue" />
+            </div>
+          )}
         </div>
         <div className="card-table-details">
-          <div>{job["work-description"]}</div>
+          <div> Details: {job["work-description"]}</div>
+        </div>
+        <div className="card-table-talent">
+          <div> Talent : {job["work-type"]}</div>
         </div>
         <div className="card-table-price">
           <div className="card-table-price-title">Price :</div>
           <div> {job["work-price"]}</div>
         </div>
         <div className="card-table-status">job received</div>
-        {!josHired && (
+        {userEmail !== job.email && (
           <div className="card-table-button">
             <Button>Apply</Button>
           </div>
@@ -93,13 +144,11 @@ function CardTable({ job }) {
             <Input
               value={updateJobInputs["work-description"]}
               placeholder={job["work-description"]}
-              onChange={
-                (e) =>
-                  setUpdateJobInputs({
-                    ...updateJobInputs,
-                    "work-description": e.target.value,
-                  })
-                // console.log(e.target.value, "e.target.value")
+              onChange={(e) =>
+                setUpdateJobInputs({
+                  ...updateJobInputs,
+                  "work-description": e.target.value,
+                })
               }
             />
           </Form.Item>
@@ -124,13 +173,11 @@ function CardTable({ job }) {
               type="number"
               value={updateJobInputs["work-price"]}
               placeholder={job["work-price"]}
-              onChange={
-                (e) =>
-                  setUpdateJobInputs({
-                    ...updateJobInputs,
-                    "work-price": e.target.value,
-                  })
-                // console.log(e.target.value, "e.target.value")
+              onChange={(e) =>
+                setUpdateJobInputs({
+                  ...updateJobInputs,
+                  "work-price": e.target.value,
+                })
               }
             />
           </Form.Item>

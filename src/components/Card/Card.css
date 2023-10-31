@@ -3,13 +3,20 @@
   padding: 5px;
 }
 .card-table-details {
-  word-wrap: break-word;
+  display: flex;
   width: 100%;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 50px;
 }
+
 .card-table-status {
   margin: 5px;
   display: flex;
   justify-content: flex-end;
+  height: 30px;
 }
 .card-table-button {
   margin: 5px;
@@ -17,11 +24,16 @@
   justify-content: flex-end;
 }
 .card-table-price {
+  height: 30px;
+
   margin: 5px;
   display: flex;
 }
 .card-table-change-job-details {
   display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
 }
 .card-table-navbar {
   display: flex;
@@ -35,4 +47,7 @@
 }
 .add-job-input {
   margin: 5px;
+}
+.card-table-talent {
+  height: 50px;
 }

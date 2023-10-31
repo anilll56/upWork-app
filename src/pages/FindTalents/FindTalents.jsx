@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import AvailableJobsCont from "../../components/AvailableJobs/AvailableJobsCont";
 
 function FindTalents() {
-  const [freelancerJobs, SetFreelancerJobs] = useState([]);
+  const [clientJobs, SetClientJobs] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const optionsNames = useSelector((state) => state.person.person.optionsNames);
   const options = optionsNames.map((option) => {
@@ -22,7 +22,7 @@ function FindTalents() {
   };
   useEffect(() => {
     getTheFreelancerJob().then((res) => {
-      SetFreelancerJobs(res.data);
+      SetClientJobs(res.data);
     });
   }, []);
   return (
@@ -42,7 +42,7 @@ function FindTalents() {
         />
       </div>
       <div className="find-talent-container">
-        <AvailableJobsCont jobs={freelancerJobs} />
+        <AvailableJobsCont jobs={clientJobs} />
       </div>
     </div>
   );

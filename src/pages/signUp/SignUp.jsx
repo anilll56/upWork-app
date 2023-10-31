@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 function SignUp() {
   const [userType, setUserType] = useState("freelancer");
   const [rating, setRating] = useState(3);
+
   const navigave = useNavigate();
   const [signUpInputs, setSignUpInputs] = useState({
     name: "",
@@ -16,7 +17,7 @@ function SignUp() {
     password: "",
     confirmPassword: "",
     skills: [],
-    price: "",
+    price: rating,
   });
   // console.log(signUpInputs, "signUpInputs");
   const handleUserTypeChange = (event) => {
@@ -49,7 +50,9 @@ function SignUp() {
           signUpInputs.password,
           signUpInputs.skills,
           signUpInputs.price
-        );
+        ).then((res) => {
+          navigave("/login");
+        });
       }
     }
   };

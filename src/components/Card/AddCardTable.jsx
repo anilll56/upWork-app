@@ -3,13 +3,14 @@ import { Card, Button, Modal, Input, Select } from "antd";
 import { GrAdd } from "react-icons/gr";
 import "./Card.css";
 import { useSelector } from "react-redux";
-import { AddClientJob } from "../../api/HandleApi";
+import { AddClientJob, addFreelancerJob } from "../../api/HandleApi";
 
 function AddCardTable() {
   const [openModal, setOpenModal] = useState(false);
-  const email = useSelector(
-    (state) => state?.person?.person?.personInfo?.user?.email
-  );
+  const user = localStorage.getItem("user");
+  const email = JSON.parse(user).email;
+  const UserRole = JSON.parse(user).role;
+
   const [addCardInputs, setAddCardInputs] = useState({
     jobTitle: "",
     email: email,
@@ -25,18 +26,34 @@ function AddCardTable() {
     };
   });
   const addNewCard = () => {
-    AddClientJob(
-      addCardInputs.jobTitle,
-      addCardInputs.email,
-      addCardInputs.jobDetails,
-      addCardInputs.jobTalents,
-      addCardInputs.jobPrice
-    ).then((res) => {
-      setOpenModal(false);
-      window.location.reload();
-    });
+    if (UserRole === "client") {
+      AddClientJob(
+        addCardInputs.jobTitle,
+        addCardInputs.email,
+        addCardInputs.jobDetails,
+        addCardInputs.jobTalents,
+        addCardInputs.jobPrice
+      ).then((res) => {
+        setOpenModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 6000);
+      });
+    } else if (UserRole === "freelancer") {
+      addFreelancerJob(
+        addCardInputs.jobTitle,
+        addCardInputs.email,
+        addCardInputs.jobDetails,
+        addCardInputs.jobTalents,
+        addCardInputs.jobPrice
+      ).then((res) => {
+        setOpenModal(false);
+        setTimeout(() => {
+          window.location.reload();
+        }, 6000);
+      });
+    }
   };
-
   return (
     <div>
       <Card
@@ -45,7 +62,7 @@ function AddCardTable() {
         }}
         title="Create New Job"
         bordered={false}
-        style={{ width: 250, height: 250, margin: "10px" }}
+        style={{ width: 300, height: 300, margin: "10px" }}
         hoverable
       >
         <GrAdd size={50} />
