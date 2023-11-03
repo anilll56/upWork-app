@@ -7,6 +7,7 @@ import { LoginClientUser, LoginfreelancerUser } from "../../api/HandleApi";
 import { useSelector, useDispatch } from "react-redux";
 import { setPerson } from "../../redux/personSlice";
 import { Form, Checkbox } from "antd";
+import { LoginUser } from "../../api/HandleApi";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -22,34 +23,12 @@ function LoginPage() {
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
-  const handleSubmit = () => {
-    LoginfreelancerUser(email, password).then((res) => {
-      if (res) {
-        dispatch(setPerson(res));
-        navigate("/home");
-      }
-    });
-  };
   const SignUp = () => {
-    if (userType === "client") {
-      console.log("client");
-      console.log(loginInputs);
-      LoginClientUser(loginInputs.email, loginInputs.password).then((res) => {
-        if (res) {
-          dispatch(setPerson(res));
-          navigate("/home");
-        }
-      });
-    } else {
-      LoginfreelancerUser(loginInputs.email, loginInputs.password).then(
-        (res) => {
-          if (res) {
-            dispatch(setPerson(res));
-            navigate("/home");
-          }
-        }
-      );
-    }
+    console.log(loginInputs);
+    LoginUser(loginInputs.email, loginInputs.password, userType).then((res) => {
+      dispatch(setPerson(res));
+      navigate("/home");
+    });
   };
 
   return (

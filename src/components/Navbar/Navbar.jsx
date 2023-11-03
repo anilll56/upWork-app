@@ -1,18 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Navbar.css";
 import { DownOutlined, SmileOutlined } from "@ant-design/icons";
 import { Dropdown, Space, Modal, Input, Button } from "antd";
 import { AiOutlineUser } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { setPerson } from "../../redux/personSlice";
 
 function Navbar() {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.person.person.personInfo);
+  const user = useSelector((state) => state.person.info);
   const [openModal, setOpenModal] = useState(false);
+  console.log(user, "user");
 
   const LogOut = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("Myjobs");
     navigate("/login");
   };
   const createJob = () => {};

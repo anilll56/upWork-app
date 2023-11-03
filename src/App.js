@@ -22,12 +22,10 @@ function App() {
   const user = localStorage.getItem("user");
   const userEmail = JSON.parse(user)?.email;
   const userRole = JSON.parse(user)?.role;
-  const authenticated = useSelector(
-    (state) => state.person.person.authenticated
-  );
-  // const myjobs = useSelector((state) => state.person.person.myjobs);
-  // console.log(myjobs, "myjobs11");
-  const fetchClientJobs = async () => {
+  const authenticated = useSelector((state) => state.person.authenticated);
+  const reduxUser = useSelector((state) => state.person.info);
+  console.log(reduxUser, "reduxUser");
+  const fetchJobs = async () => {
     try {
       if (userRole === "freelancer") {
         const response = await getTheFreelancerJobByEmail(userEmail);
@@ -42,13 +40,14 @@ function App() {
       console.log(error);
     }
   };
+  const userInfo = useSelector((state) => state.person.info);
+  console.log(userInfo, "userInfo");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-    fetchClientJobs();
+    fetchJobs();
     if (user) {
-      dispatch(setPerson({ user }));
+      dispatch(setPerson({ user: user }));
       dispatch(setAuthenticated(true));
     } else {
       dispatch(setPerson({ user: null }));
@@ -56,7 +55,7 @@ function App() {
       dispatch(setAuthenticated(false));
       navigate("/login");
     }
-  }, [authenticated]);
+  }, [authenticated, userRole, userEmail, dispatch]);
 
   return (
     <div className="App">

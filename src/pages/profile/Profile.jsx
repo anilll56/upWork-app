@@ -19,17 +19,24 @@ import CardTable from "../../components/Card/CardTable";
 import AddCardTable from "../../components/Card/AddCardTable";
 
 function Profile() {
-  const user = useSelector((state) => state.person.person.personInfo);
-  const userJobs = useSelector((state) => state.person.person.myJobs.jobs);
+  const user = localStorage.getItem("user");
+  const reduxUser = useSelector((state) => state.person.info);
+  const userJobs = useSelector((state) => state.person.myJobs);
+  console.log(userJobs, "userJobs");
   const Myjobs = localStorage.getItem("Myjobs");
+  console.log(Myjobs, "Myjobs");
   const parsedDataMyJob = JSON.parse(Myjobs);
+  const pendingJobs = parsedDataMyJob?.filter(
+    (job) => job["work-status"] === "pending"
+  );
+  console.log(pendingJobs, "pendingJobs");
   const [openModal, setOpenModal] = useState(false);
   const [modalInputValue, setModalInputValue] = useState({
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
-  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
       value: option,
@@ -82,7 +89,7 @@ function Profile() {
               <Form.Item label="Email" name="email">
                 <Input placeholder={user?.user?.email || ""} />
               </Form.Item>
-              {user.type === "freelancer" && (
+              {user.role === "freelancer" && (
                 <>
                   <Form.Item label="Price" name="Price">
                     <Input />
@@ -126,6 +133,10 @@ function Profile() {
         <div className="profile-righth-side">
           <div className="profile-righth-side-container">
             {parsedDataMyJob && <AvailableJobsCont jobs={parsedDataMyJob} />}
+          </div>
+          <div className="profile-righth-side-container">
+            <div>Pending Jobs</div>
+            {pendingJobs && <AvailableJobsCont jobs={pendingJobs} />}
           </div>
           <div>
             <AddCardTable />

@@ -57,7 +57,7 @@ function SignUp() {
     }
   };
 
-  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
       value: option,

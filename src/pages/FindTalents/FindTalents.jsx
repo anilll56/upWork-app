@@ -8,7 +8,7 @@ import AvailableJobsCont from "../../components/AvailableJobs/AvailableJobsCont"
 function FindTalents() {
   const [clientJobs, SetClientJobs] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
       value: option,

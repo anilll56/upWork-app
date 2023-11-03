@@ -3,22 +3,30 @@ import { Card, Button, Modal, Input, Form, Select } from "antd";
 import "./Card.css";
 import { FaRegEdit } from "react-icons/fa";
 import {
+  ApplyJob,
+  fetchJobs,
   updateTheClientJob,
   updateTheFreelancerJob,
 } from "../../api/HandleApi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { deleteTheJob } from "../../api/HandleApi";
+import { deleteJob } from "../../redux/personSlice";
+import { setMyJobs } from "../../redux/personSlice";
+import { getTheClientJobByEmail } from "../../api/HandleApi";
+import { getTheFreelancerJobByEmail } from "../../api/HandleApi";
 
 function CardTable({ job }) {
+  const dispatch = useDispatch();
   const [josHired, setJobsHired] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
   const user = localStorage.getItem("user");
   const userEmail = JSON.parse(user).email;
-  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const optionsNames = useSelector((state) => state.person.optionsNames);
   const [selectedItems, setSelectedItems] = useState(job["work-type"]);
   const UserRole = JSON.parse(user).role;
+  const userRedux = useSelector((state) => state.person.info);
   const options = optionsNames.map((option) => {
     return {
       value: option,
@@ -32,6 +40,22 @@ function CardTable({ job }) {
     "work-type": selectedItems,
     "work-price": job["work-price"],
   });
+  const Apply = () => {
+    if (UserRole === "freeLancer") {
+      ApplyJob(job.id, userRedux.user.name, userEmail, "deneme").then((res) => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 5000);
+      });
+    } else {
+      ApplyJob(job.id, userEmail).then((res) => {
+        setTimeout(() => {
+          fetchJobs(userEmail, UserRole);
+          window.location.reload();
+        }, 2000);
+      });
+    }
+  };
 
   const UpdateJob = () => {
     if (UserRole === "client") {
@@ -45,8 +69,9 @@ function CardTable({ job }) {
       ).then((res) => {
         setOpenModal(false);
         setTimeout(() => {
+          fetchJobs(userEmail, UserRole);
           window.location.reload();
-        }, 5000);
+        }, 2000);
       });
     } else {
       updateTheFreelancerJob(
@@ -59,11 +84,13 @@ function CardTable({ job }) {
       ).then((res) => {
         setOpenModal(false);
         setTimeout(() => {
+          fetchJobs(userEmail, UserRole);
           window.location.reload();
-        }, 5000);
+        }, 2000);
       });
     }
   };
+  console.log(job);
 
   return (
     <div>
@@ -74,8 +101,10 @@ function CardTable({ job }) {
               onClick={() => {
                 deleteTheJob(job.id, UserRole).then((res) => {
                   setTimeout(() => {
-                    window.location.reload();
-                  }, 2000);
+                    fetchJobs(UserRole, userEmail).then((res) => {
+                      dispatch(setMyJobs(res.data));
+                    });
+                  }, 1000);
                 });
               }}
             >
@@ -114,10 +143,17 @@ function CardTable({ job }) {
           <div className="card-table-price-title">Price :</div>
           <div> {job["work-price"]}</div>
         </div>
-        <div className="card-table-status">job received</div>
+        <div className="card-table-status">{job["work-status"]}</div>
         {userEmail !== job.email && (
           <div className="card-table-button">
-            <Button>Apply</Button>
+            <Button
+              disabled={job["work-status"] === "available" ? false : true}
+              onClick={() => {
+                Apply();
+              }}
+            >
+              {job["work-status"]}
+            </Button>
           </div>
         )}
       </Card>

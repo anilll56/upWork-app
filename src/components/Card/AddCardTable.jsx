@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Card, Button, Modal, Input, Select } from "antd";
 import { GrAdd } from "react-icons/gr";
 import "./Card.css";
-import { useSelector } from "react-redux";
-import { AddClientJob, addFreelancerJob } from "../../api/HandleApi";
+import { useSelector, useDispatch } from "react-redux";
+import { AddClientJob, addFreelancerJob, fetchJobs } from "../../api/HandleApi";
+import { setMyJobs } from "../../redux/personSlice";
 
 function AddCardTable() {
   const [openModal, setOpenModal] = useState(false);
   const user = localStorage.getItem("user");
   const email = JSON.parse(user).email;
   const UserRole = JSON.parse(user).role;
+  const dispatch = useDispatch();
 
   const [addCardInputs, setAddCardInputs] = useState({
     jobTitle: "",
@@ -18,7 +20,7 @@ function AddCardTable() {
     jobTalents: "",
     jobPrice: "",
   });
-  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
       value: option,
@@ -36,8 +38,9 @@ function AddCardTable() {
       ).then((res) => {
         setOpenModal(false);
         setTimeout(() => {
+          fetchJobs(email, UserRole);
           window.location.reload();
-        }, 6000);
+        }, 2000);
       });
     } else if (UserRole === "freelancer") {
       addFreelancerJob(
@@ -49,8 +52,9 @@ function AddCardTable() {
       ).then((res) => {
         setOpenModal(false);
         setTimeout(() => {
+          fetchJobs(email, UserRole);
           window.location.reload();
-        }, 6000);
+        }, 2000);
       });
     }
   };

@@ -10,7 +10,7 @@ function FindWorks() {
   const [freelancerJobs, SetFreelancerJobs] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const [filteredJobs, setFilteredJobs] = useState([]);
-  const optionsNames = useSelector((state) => state.person.person.optionsNames);
+  const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
       value: option,
