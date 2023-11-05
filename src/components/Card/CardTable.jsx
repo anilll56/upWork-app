@@ -7,20 +7,19 @@ import {
   fetchJobs,
   updateTheClientJob,
   updateTheFreelancerJob,
+  RejectUserForTheJob,
+  AcceptUserForTheJob,
+  hireUserForTheJob,
 } from "../../api/HandleApi";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
 import { deleteTheJob } from "../../api/HandleApi";
-import { deleteJob } from "../../redux/personSlice";
 import { setMyJobs } from "../../redux/personSlice";
-import { getTheClientJobByEmail } from "../../api/HandleApi";
-import { getTheFreelancerJobByEmail } from "../../api/HandleApi";
 
 function CardTable({ job }) {
   const dispatch = useDispatch();
-  const [josHired, setJobsHired] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-
+  const [openModalInfo, setOpenModalInfo] = useState(false);
   const user = localStorage.getItem("user");
   const userEmail = JSON.parse(user).email;
   const optionsNames = useSelector((state) => state.person.optionsNames);
@@ -40,19 +39,24 @@ function CardTable({ job }) {
     "work-type": selectedItems,
     "work-price": job["work-price"],
   });
+  const [ApplyJobInfo, setApplyJobInfo] = useState("");
   const Apply = () => {
-    if (UserRole === "freeLancer") {
-      ApplyJob(job.id, userRedux.user.name, userEmail, "deneme").then((res) => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 5000);
-      });
-    } else {
+    if (UserRole === "freelancer") {
+      ApplyJob(job.id, userRedux.user.name, userEmail, ApplyJobInfo).then(
+        (res) => {
+          setTimeout(() => {
+            window.location.reload();
+          }, 5000);
+          setOpenModalInfo(false);
+        }
+      );
+    } else if (UserRole === "client") {
       ApplyJob(job.id, userEmail).then((res) => {
         setTimeout(() => {
           fetchJobs(userEmail, UserRole);
           window.location.reload();
         }, 2000);
+        setOpenModalInfo(false);
       });
     }
   };
@@ -76,11 +80,11 @@ function CardTable({ job }) {
     } else {
       updateTheFreelancerJob(
         updateJobInputs.id,
-        updateJobInputs.name, // name alanı
-        updateJobInputs.email, // email alanı
-        updateJobInputs["work-description"], // jobDetails alanı
-        updateJobInputs["work-type"], // jobTalents alanı
-        updateJobInputs["work-price"] // jobPrice alanı
+        updateJobInputs.name,
+        updateJobInputs.email,
+        updateJobInputs["work-description"],
+        updateJobInputs["work-type"],
+        updateJobInputs["work-price"]
       ).then((res) => {
         setOpenModal(false);
         setTimeout(() => {
@@ -90,7 +94,32 @@ function CardTable({ job }) {
       });
     }
   };
-  console.log(job);
+  const AcceptJob = () => {
+    AcceptUserForTheJob(job.id).then((res) => {
+      setTimeout(() => {
+        fetchJobs(userEmail, UserRole);
+        window.location.reload();
+      }, 2000);
+    });
+  };
+
+  const RejectJob = () => {
+    RejectUserForTheJob(job.id).then((res) => {
+      setTimeout(() => {
+        fetchJobs(userEmail, UserRole);
+        window.location.reload();
+      }, 2000);
+    });
+  };
+
+  const hireFreelancer = () => {
+    hireUserForTheJob(job.id, userRedux?.user?.name, userEmail).then((res) => {
+      setTimeout(() => {
+        fetchJobs(userEmail, UserRole);
+        window.location.reload();
+      }, 2000);
+    });
+  };
 
   return (
     <div>
@@ -116,8 +145,14 @@ function CardTable({ job }) {
         bordered={false}
         style={{
           width: 300,
-          height: 300,
+          height: 340,
           margin: "10px",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+          borderRadius: "15px",
+          backgroundColor: "#f5f5f5",
+          alignItems: "center",
+          fontSize: "13px",
+          fontWeight: "bold",
         }}
         hoverable
       >
@@ -129,7 +164,9 @@ function CardTable({ job }) {
                 setOpenModal(true);
               }}
             >
-              <FaRegEdit size={15} color="blue" />
+              {job["work-status"] === "available" && (
+                <FaRegEdit size={15} color="blue" />
+              )}
             </div>
           )}
         </div>
@@ -140,22 +177,55 @@ function CardTable({ job }) {
           <div> Talent : {job["work-type"]}</div>
         </div>
         <div className="card-table-price">
-          <div className="card-table-price-title">Price :</div>
-          <div> {job["work-price"]}</div>
+          <div> Price : {job["work-price"]}</div>
         </div>
-        <div className="card-table-status">{job["work-status"]}</div>
+        {job["apployed-freelancersInfo"] && (
+          <div className="card-table-apployed-freelancersInfo">
+            <div>
+              {" "}
+              Apployed Freelancers Info : {job["apployed-freelancersInfo"]}
+            </div>
+          </div>
+        )}
+        <div className="card-table-status">
+          {userEmail === job.email && job["work-status"] === "pending" && (
+            <div className="card-table-status-buttons">
+              <Button
+                type="primary"
+                onClick={() => {
+                  AcceptJob();
+                }}
+              >
+                Accept
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  RejectJob();
+                }}
+              >
+                Reject
+              </Button>
+            </div>
+          )}
+          <div>{job["work-status"]}</div>
+        </div>
         {userEmail !== job.email && (
           <div className="card-table-button">
             <Button
               disabled={job["work-status"] === "available" ? false : true}
               onClick={() => {
-                Apply();
+                if (UserRole === "freelancer") {
+                  setOpenModalInfo(true);
+                } else {
+                  hireFreelancer();
+                }
               }}
             >
               {job["work-status"]}
             </Button>
           </div>
-        )}
+        )}{" "}
       </Card>
       <Modal
         title="update job"
@@ -226,6 +296,32 @@ function CardTable({ job }) {
           }}
         >
           Update
+        </Button>
+      </Modal>
+      <Modal
+        title="Info"
+        open={openModalInfo}
+        onCancel={() => {
+          setOpenModalInfo(false);
+        }}
+        okButtonProps={{ style: { display: "none" } }}
+        cancelButtonProps={{ style: { display: "none" } }}
+      >
+        <Input
+          placeholder="Info"
+          onChange={(e) => setApplyJobInfo(e.target.value)}
+          size="large"
+        />
+        <Button
+          type="primary"
+          onClick={() => {
+            Apply();
+          }}
+          style={{
+            margin: "10px",
+          }}
+        >
+          Apply
         </Button>
       </Modal>
     </div>

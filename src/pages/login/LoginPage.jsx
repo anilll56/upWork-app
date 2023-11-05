@@ -16,19 +16,23 @@ function LoginPage() {
     email: "",
     password: "",
   });
-  const [email, setEmail] = useState("aniltan33322@hotmail.com");
-  const [password, setPassword] = useState("anil11");
-  const person = useSelector((state) => state.person.person);
+
   const [userType, setUserType] = useState("freelancer");
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
   const SignUp = () => {
     console.log(loginInputs);
-    LoginUser(loginInputs.email, loginInputs.password, userType).then((res) => {
-      dispatch(setPerson(res));
-      navigate("/home");
-    });
+    if (loginInputs.email === "" || loginInputs.password === "") {
+      return alert("please fill the inputs");
+    } else {
+      LoginUser(loginInputs.email, loginInputs.password, userType).then(
+        (res) => {
+          dispatch(setPerson(res));
+          navigate("/home");
+        }
+      );
+    }
   };
 
   return (

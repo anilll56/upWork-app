@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/login/LoginPage";
 import Navbar from "./components/Navbar/Navbar";
 import SignUp from "./pages/signUp/SignUp";
@@ -11,6 +11,7 @@ import { setAuthenticated, setPerson, setMyJobs } from "./redux/personSlice";
 import HomePage from "./pages/home/HomePage";
 import FindTalents from "./pages/FindTalents/FindTalents";
 import FindWorks from "./pages/FindWorks/FindWorks";
+import RoutePage from "./route/RoutePage";
 import {
   getTheClientJobByEmail,
   getTheFreelancerJobByEmail,
@@ -24,7 +25,7 @@ function App() {
   const userRole = JSON.parse(user)?.role;
   const authenticated = useSelector((state) => state.person.authenticated);
   const reduxUser = useSelector((state) => state.person.info);
-  console.log(reduxUser, "reduxUser");
+
   const fetchJobs = async () => {
     try {
       if (userRole === "freelancer") {
@@ -41,7 +42,6 @@ function App() {
     }
   };
   const userInfo = useSelector((state) => state.person.info);
-  console.log(userInfo, "userInfo");
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -59,22 +59,7 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/home/*" element={<Navbar />} />
-        <Route path="/" element={<Navbar />} />
-      </Routes>
-      <Routes>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/" element={<HomePage />} />
-      </Routes>
-
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/home/profile" element={<Profile />} />
-        <Route path="/home/findTalents" element={<FindTalents />} />
-        <Route path="/home/findWorks" element={<FindWorks />} />
-      </Routes>
+      <RoutePage />
     </div>
   );
 }

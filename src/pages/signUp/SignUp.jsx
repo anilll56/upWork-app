@@ -1,4 +1,4 @@
-import { Button, Cascader, Checkbox, Form, Input, Rate, Select } from "antd";
+import { Button, Checkbox, Form, Input, Rate, Select } from "antd";
 import React, { useState } from "react";
 import "./SignUp.css";
 import { useNavigate } from "react-router-dom";
@@ -19,18 +19,12 @@ function SignUp() {
     skills: [],
     price: rating,
   });
-  // console.log(signUpInputs, "signUpInputs");
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
   const HnadleRatingChange = (event) => {
     setRating(event);
   };
-  let name = "Anıl";
-  let mail = "deddd111@hotmail.com";
-  let password = "anil11";
-  let talent = "React";
-  let price = "20";
   const signup = () => {
     if (signUpInputs.password !== signUpInputs.confirmPassword) {
       return alert("passwords don't match");
@@ -56,7 +50,7 @@ function SignUp() {
       }
     }
   };
-
+  console.log(signUpInputs);
   const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
@@ -164,6 +158,12 @@ function SignUp() {
                 }}
                 placeholder="Select your Skills"
                 options={options}
+                onChange={(value) => {
+                  setSignUpInputs({
+                    ...signUpInputs,
+                    skills: value,
+                  });
+                }}
               />
             </div>
           )}

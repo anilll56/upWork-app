@@ -1,5 +1,15 @@
 .home-jobs-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 1rem;
+}
+.home-card-cont {
   display: flex;
-  margin-left: 1rem;
-  font-size: 25px;
+  flex-direction: column;
+  overflow: hidden;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }

@@ -15,8 +15,9 @@
 .card-table-status {
   margin: 5px;
   display: flex;
-  justify-content: flex-end;
-  height: 30px;
+  justify-content: space-between;
+  height: 40px;
+  align-items: center;
 }
 .card-table-button {
   margin: 5px;
@@ -24,7 +25,7 @@
   justify-content: flex-end;
 }
 .card-table-price {
-  height: 30px;
+  height: 10px;
 
   margin: 5px;
   display: flex;
@@ -49,5 +50,11 @@
   margin: 5px;
 }
 .card-table-talent {
-  height: 50px;
+  height: 60px;
+}
+
+.card-table-status-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
 }

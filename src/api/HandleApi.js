@@ -1,9 +1,8 @@
-import { type } from "@testing-library/user-event/dist/type";
 import axios from "axios";
 const url = "http://127.0.0.1:8000/api";
 
 const LoginUser = async (email, password, userType) => {
-  const response = await axios
+  await axios
     .post(`${url}/loginUser`, {
       email: email,
       password: password,
@@ -241,10 +240,10 @@ const fetchJobs = async (userRole, userEmail) => {
 
 const ApplyJob = async (jobId, name, email, requesterInfo) => {
   const response = await axios.post(`${url}/applyForTheJob`, {
-    jobId: 1,
-    name: "ahmet",
-    email: "freelancer@hotmail.com",
-    requesterInfo: "react , php",
+    jobId: jobId,
+    name: name,
+    email: email,
+    requesterInfo: requesterInfo,
   });
   alert("Başvurunuz başarıyla alınmıştır");
   return response.data;
@@ -254,6 +253,51 @@ const getPendingJobs = async (email, status) => {
   const response = await axios.get(`${url}/getPendingJobs`, {
     email: email,
     status: status,
+  });
+  return response.data;
+};
+
+const AcceptUserForTheJob = async (jobId) => {
+  const response = await axios.post(`${url}/acceptUserForTheJob`, {
+    id: jobId,
+  });
+  alert("Başvuru kabul edildi");
+  return response.data;
+};
+
+const hireUserForTheJob = async (jobId, name, email) => {
+  console.log(jobId, name, email);
+  const response = await axios.post(`${url}/hireFreelancer`, {
+    jobId: jobId,
+    name: name,
+    email: email,
+  });
+  alert("İşe aldınız");
+  return response.data;
+};
+
+const RejectUserForTheJob = async (jobId) => {
+  const response = await axios.post(`${url}/rejectUserForTheJob`, {
+    id: jobId,
+  });
+  return response.data;
+};
+
+const getAcceptedJobsForTheFreelancer = async (email, status) => {
+  const response = await axios.post(`${url}/getEmployedFreelancersByEmail`, {
+    email: email,
+    status: status,
+  });
+  return response.data[0];
+};
+
+const updateUser = async (name, email, talent, price, userType) => {
+  const response = await axios.post(`${url}/updateUser`, {
+    name: name === undefined ? "" : name,
+    email: email,
+    talent: talent === undefined ? "" : talent,
+    price: price === undefined ? "" : price,
+    userType: userType,
   });
   return response.data;
 };
@@ -278,4 +322,9 @@ export {
   fetchJobs,
   ApplyJob,
   getPendingJobs,
+  AcceptUserForTheJob,
+  RejectUserForTheJob,
+  getAcceptedJobsForTheFreelancer,
+  updateUser,
+  hireUserForTheJob,
 };

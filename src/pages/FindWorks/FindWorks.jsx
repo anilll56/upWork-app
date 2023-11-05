@@ -23,27 +23,29 @@ function FindWorks() {
         option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
   };
-  const stringSelectedItems = selectedItems.join(" ");
+  const stringSelectedItems = selectedItems.toString();
+  const selectedItemNoSpace = stringSelectedItems.replace(/\s/g, "");
+
   useEffect(() => {
     getClientJobs().then((res) => {
-      const freelancerJobs = res.data; // Assuming res.data contains the jobs
+      const freelancerJobs = res.data;
       SetFreelancerJobs(freelancerJobs);
 
-      const stringSelectedItems = selectedItems.join("");
+      // İş-tipi (work-type) değerlerini temizle ve karşılaştır
+      const cleanedFreelancerJobs = freelancerJobs.map((job) => ({
+        ...job,
+        "work-type": job["work-type"].replace(/\s/g, ""),
+      }));
 
-      const filteredJobs = freelancerJobs.filter((job) => {
-        return stringSelectedItems.includes(job["work-type"]);
-      });
+      const filteredJobs = cleanedFreelancerJobs.filter((job) =>
+        selectedItemNoSpace.includes(job["work-type"])
+      );
+
       setFilteredJobs(filteredJobs);
     });
   }, [selectedItems]);
-  console.log(selectedItems, "selectedItems");
-
-  console.log(stringSelectedItems, "stringSelectedItems");
-  console.log(filteredJobs, "filteredJobs");
-  console.log(freelancerJobs, "freelancerJobs");
   return (
-    <div>
+    <div className="find-talent-page">
       <div className="find-talent-input">
         <Select
           mode="multiple"

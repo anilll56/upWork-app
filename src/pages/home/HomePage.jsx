@@ -4,23 +4,37 @@ import { getClientJobs, getTheFreelancerJob } from "../../api/HandleApi";
 import AvailableJobsCont from "../../components/AvailableJobs/AvailableJobsCont";
 
 function HomePage() {
-  const [Clientjobs, SetClientJobs] = useState([]);
-  const [freelancerJobs, SetFreelancerJobs] = useState([]);
+  const [clientjobs, setClientJobs] = useState([]);
+  const [freelancerJobs, setFreelancerJobs] = useState([]);
   useEffect(() => {
     getClientJobs().then((res) => {
-      SetClientJobs(res.data);
+      setClientJobs(res.data);
     });
     getTheFreelancerJob().then((res) => {
-      SetFreelancerJobs(res.data);
+      setFreelancerJobs(res.data);
     });
   }, []);
 
   return (
     <div>
-      <div className="home-jobs-title ">Aviable Jobs for freelancer user</div>
-      <AvailableJobsCont jobs={Clientjobs} />
-      <div className="home-jobs-title ">Aviable Freelancer User</div>
-      <AvailableJobsCont jobs={freelancerJobs} />
+      {clientjobs.length > 0 && (
+        <div>
+          <div className="home-jobs-title ">
+            Aviable Jobs for freelancer user
+          </div>
+          <div className="home-card-cont">
+            <AvailableJobsCont jobs={clientjobs} />
+          </div>
+        </div>
+      )}
+      {freelancerJobs.length > 0 && (
+        <div>
+          <div className="home-jobs-title ">Aviable Freelancer User</div>
+          <div className="home-card-cont">
+            <AvailableJobsCont jobs={freelancerJobs} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -54,7 +54,7 @@ function AddCardTable() {
         setTimeout(() => {
           fetchJobs(email, UserRole);
           window.location.reload();
-        }, 2000);
+        }, 3000);
       });
     }
   };
@@ -66,7 +66,18 @@ function AddCardTable() {
         }}
         title="Create New Job"
         bordered={false}
-        style={{ width: 300, height: 300, margin: "10px" }}
+        style={{
+          width: 280,
+          height: 280,
+          margin: "10px",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
+          borderRadius: "15px",
+          backgroundColor: "#f5f5f5",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
         hoverable
       >
         <GrAdd size={50} />
