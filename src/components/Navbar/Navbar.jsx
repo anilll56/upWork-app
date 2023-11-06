@@ -18,40 +18,6 @@ function Navbar() {
     localStorage.removeItem("Myjobs");
     navigate("/login");
   };
-  const createJob = () => {};
-
-  const items = [
-    {
-      key: "1",
-      label: (
-        <div
-          onClick={() => {
-            setOpenModal(true);
-          }}
-        >
-          <div>post a job and hire a pro</div>
-        </div>
-      ),
-    },
-    {
-      key: "2",
-      label: (
-        <div>
-          <div>Browse and a buy a project</div>
-        </div>
-      ),
-      //   disabled: true,
-    },
-    {
-      key: "3",
-      label: (
-        <div>
-          <div>get a advice from our experts</div>
-        </div>
-      ),
-      //   disabled: true,
-    },
-  ];
   const PersonelInfoItems = [
     {
       key: "1",
@@ -128,21 +94,6 @@ function Navbar() {
           <h2>Upwork</h2>
         </div>
         <div className="navbar-middle">
-          <div className="navbar-middle-dropdown-content">
-            <Dropdown
-              menu={{
-                style: {},
-                items,
-              }}
-            >
-              <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                  Find Talent
-                  <DownOutlined />
-                </Space>
-              </a>
-            </Dropdown>
-          </div>
           <div className="navbar-middle-dropdown-content">
             <Dropdown
               menu={{

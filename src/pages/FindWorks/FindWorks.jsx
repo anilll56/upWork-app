@@ -31,7 +31,6 @@ function FindWorks() {
       const freelancerJobs = res.data;
       SetFreelancerJobs(freelancerJobs);
 
-      // İş-tipi (work-type) değerlerini temizle ve karşılaştır
       const cleanedFreelancerJobs = freelancerJobs.map((job) => ({
         ...job,
         "work-type": job["work-type"].replace(/\s/g, ""),

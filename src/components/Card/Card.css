@@ -22,7 +22,7 @@
 .card-table-button {
   margin: 5px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-around;
 }
 .card-table-price {
   height: 10px;

@@ -12,17 +12,16 @@ import {
 
 function Profile() {
   const reduxUser = useSelector((state) => state.person.info);
+  const userType = reduxUser?.user?.role;
+  const userMail = reduxUser?.user?.email;
   const Myjobs = localStorage.getItem("Myjobs");
   const parsedDataMyJob = JSON.parse(Myjobs);
   const currentJobs = parsedDataMyJob?.filter(
-    (job) =>
-      job["work-status"] !== "pending" && job["work-status"] !== "accepted"
-  );
-  const pendingJobs = parsedDataMyJob?.filter(
-    (job) => job["work-status"] === "pending"
+    (job) => job["work-status"] === "aviable"
   );
   const [getAcceptedJobs, setGetAcceptedJobs] = useState([]);
-  const [myApplications, setMyApplications] = useState([]);
+  const [pendingJobs, setPendingJobs] = useState([]);
+  const [getCompletedJobs, setGetCompletedJobs] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [modalInputValue, setModalInputValue] = useState({
     oldPassword: "",
@@ -42,18 +41,23 @@ function Profile() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  console.log(reduxUser?.user, "dwdwdw");
   const [updateProfileInputs, setUpdateProfileInputs] = useState({
     name: reduxUser?.user?.name || "",
     price: reduxUser?.user?.price || "",
     skills: reduxUser?.user?.talent || [],
-    userType: reduxUser?.user?.role || "",
   });
+  console.log(reduxUser, "reduxUser");
 
   useEffect(() => {
     if (reduxUser?.user?.role === "client") {
       setGetAcceptedJobs(
         parsedDataMyJob?.filter((job) => job["work-status"] === "accepted")
+      );
+      setPendingJobs(
+        parsedDataMyJob?.filter((job) => job["work-status"] === "pending")
+      );
+      setGetCompletedJobs(
+        parsedDataMyJob?.filter((job) => job["work-status"] === "completed")
       );
     } else if (reduxUser?.user?.role === "freelancer") {
       getAcceptedJobsForTheFreelancer(reduxUser?.user?.email, "accepted").then(
@@ -63,12 +67,11 @@ function Profile() {
       );
       getAcceptedJobsForTheFreelancer(reduxUser?.user?.email, "pending").then(
         (res) => {
-          setMyApplications(res);
+          setPendingJobs(res);
         }
       );
     }
   }, [reduxUser]);
-  console.log(updateProfileInputs, "dsdsd");
 
   const changePassword = () => {
     if (modalInputValue.newPassword !== modalInputValue.confirmPassword) {
@@ -77,23 +80,14 @@ function Profile() {
       console.log(modalInputValue);
     }
   };
+  console.log(updateProfileInputs.userType, "updateProfileInputs");
   const updateProfile = () => {
     if (reduxUser?.user?.role === "client") {
-      updateUser(
-        updateProfileInputs.name,
-        reduxUser?.user?.email,
-        updateProfileInputs.userType
-      ).then((res) => {
+      updateUser(updateProfileInputs.name, userMail, userType).then((res) => {
         console.log(res);
       });
     } else if (reduxUser?.user?.role === "freelancer") {
-      updateUser(
-        updateProfileInputs.name,
-        reduxUser?.user?.email,
-        updateProfileInputs.price,
-        updateProfileInputs.skills,
-        updateProfileInputs.userType
-      ).then((res) => {
+      updateUser(updateProfileInputs.name, userMail, userType).then((res) => {
         console.log(res);
       });
     }
@@ -130,7 +124,6 @@ function Profile() {
                   <Form.Item label={"Name"} name={"Name"} valuePropName>
                     <Input
                       placeholder={reduxUser?.user?.name || ""}
-                      value={updateProfileInputs?.name || ""}
                       onChange={(e) =>
                         setUpdateProfileInputs({
                           ...updateProfileInputs,
@@ -144,7 +137,6 @@ function Profile() {
                     <>
                       <Form.Item label="Price" name="Price" valuePropName>
                         <Input
-                          value={updateProfileInputs?.price || ""}
                           type="number"
                           placeholder={reduxUser?.user?.price}
                           onChange={(e) =>
@@ -224,10 +216,16 @@ function Profile() {
                 <AvailableJobsCont jobs={getAcceptedJobs} />
               </div>
             )}
-            {myApplications?.length > 0 && (
+            {getAcceptedJobs?.length > 0 && (
               <div>
                 <div>My Applications</div>
-                <AvailableJobsCont jobs={myApplications} />
+                <AvailableJobsCont jobs={getAcceptedJobs} />
+              </div>
+            )}
+            {getCompletedJobs?.length > 0 && (
+              <div>
+                <div>Completed Jobs</div>
+                <AvailableJobsCont jobs={getCompletedJobs} />
               </div>
             )}
           </div>

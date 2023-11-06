@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 const url = "http://127.0.0.1:8000/api";
 
 const LoginUser = async (email, password, userType) => {
@@ -131,22 +132,7 @@ const updateTheFreelancerJob = async (
     "work-description": jobDetails || "",
     "work-price": jobPrice || "",
   });
-  return console.log(
-    response.data,
-    "response.data",
-    "id",
-    id,
-    "title",
-    jobTitle,
-    "email",
-    email,
-    "details",
-    jobDetails,
-    "talents",
-    jobTalents,
-    "price",
-    jobPrice
-  );
+  return response.data;
 };
 
 const AddClientJob = async (
@@ -245,7 +231,7 @@ const ApplyJob = async (jobId, name, email, requesterInfo) => {
     email: email,
     requesterInfo: requesterInfo,
   });
-  alert("Başvurunuz başarıyla alınmıştır");
+  toast.success("Başvurunu yapılmıştır");
   return response.data;
 };
 
@@ -261,7 +247,7 @@ const AcceptUserForTheJob = async (jobId) => {
   const response = await axios.post(`${url}/acceptUserForTheJob`, {
     id: jobId,
   });
-  alert("Başvuru kabul edildi");
+  toast.success("Başvuru kabul edildi");
   return response.data;
 };
 
@@ -272,7 +258,7 @@ const hireUserForTheJob = async (jobId, name, email) => {
     name: name,
     email: email,
   });
-  alert("İşe aldınız");
+  toast.success("İşe alındı");
   return response.data;
 };
 
@@ -280,6 +266,7 @@ const RejectUserForTheJob = async (jobId) => {
   const response = await axios.post(`${url}/rejectUserForTheJob`, {
     id: jobId,
   });
+  toast.error("Başvuru reddedildi");
   return response.data;
 };
 
@@ -291,14 +278,35 @@ const getAcceptedJobsForTheFreelancer = async (email, status) => {
   return response.data[0];
 };
 
-const updateUser = async (name, email, talent, price, userType) => {
+const updateUser = async (name, email, userType, talent, price) => {
+  console.log(
+    "name:",
+    name,
+    "email:",
+    email,
+    "talent:",
+    userType,
+    "updateUser22222",
+    talent,
+    "price:",
+    price,
+    "usertype:"
+  );
   const response = await axios.post(`${url}/updateUser`, {
     name: name === undefined ? "" : name,
     email: email,
-    talent: talent === undefined ? "" : talent,
-    price: price === undefined ? "" : price,
+    talent: talent === "" ? null : talent,
+    price: price === "" ? null : price,
     userType: userType,
   });
+  return response.data;
+};
+
+const complateTheJob = async (jobId) => {
+  const response = await axios.post(`${url}/complateTheJob`, {
+    id: jobId,
+  });
+  alert("İş tamamlandı");
   return response.data;
 };
 
@@ -327,4 +335,5 @@ export {
   getAcceptedJobsForTheFreelancer,
   updateUser,
   hireUserForTheJob,
+  complateTheJob,
 };

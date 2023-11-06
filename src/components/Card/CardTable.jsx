@@ -10,6 +10,7 @@ import {
   RejectUserForTheJob,
   AcceptUserForTheJob,
   hireUserForTheJob,
+  complateTheJob,
 } from "../../api/HandleApi";
 import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineClose } from "react-icons/ai";
@@ -121,6 +122,15 @@ function CardTable({ job }) {
     });
   };
 
+  const ComplateJob = (id) => {
+    complateTheJob(id).then((res) => {
+      setTimeout(() => {
+        fetchJobs(userEmail, UserRole);
+        window.location.reload();
+      }, 2000);
+    });
+  };
+
   return (
     <div>
       <Card
@@ -212,6 +222,15 @@ function CardTable({ job }) {
         </div>
         {userEmail !== job.email && (
           <div className="card-table-button">
+            {job["work-status"] === "accepted" && UserRole === "freelancer" && (
+              <Button
+                onClick={() => {
+                  ComplateJob(job.id);
+                }}
+              >
+                Complate Job
+              </Button>
+            )}
             <Button
               disabled={job["work-status"] === "available" ? false : true}
               onClick={() => {
@@ -225,7 +244,7 @@ function CardTable({ job }) {
               {job["work-status"]}
             </Button>
           </div>
-        )}{" "}
+        )}
       </Card>
       <Modal
         title="update job"
