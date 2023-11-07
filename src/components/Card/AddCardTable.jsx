@@ -4,7 +4,7 @@ import { GrAdd } from "react-icons/gr";
 import "./Card.css";
 import { useSelector, useDispatch } from "react-redux";
 import { AddClientJob, addFreelancerJob, fetchJobs } from "../../api/HandleApi";
-import { setMyJobs } from "../../redux/personSlice";
+import { addCard, setMyJobs } from "../../redux/personSlice";
 
 function AddCardTable() {
   const [openModal, setOpenModal] = useState(false);
@@ -40,7 +40,7 @@ function AddCardTable() {
         setTimeout(() => {
           fetchJobs(email, UserRole);
           window.location.reload();
-        }, 2000);
+        }, 1000);
       });
     } else if (UserRole === "freelancer") {
       addFreelancerJob(
@@ -54,17 +54,27 @@ function AddCardTable() {
         setTimeout(() => {
           fetchJobs(email, UserRole);
           window.location.reload();
-        }, 3000);
+        }, 1000);
       });
     }
+    dispatch(
+      addCard(
+        addCardInputs.jobTitle,
+        addCardInputs.email,
+        addCardInputs.jobDetails,
+        addCardInputs.jobTalents,
+        addCardInputs.jobPrice
+      )
+    );
   };
   return (
     <div>
       <Card
+        className="add-card"
         onClick={() => {
           setOpenModal(true);
         }}
-        title="Create New Job"
+        title={<div className="add-card-title">Create New Job</div>}
         bordered={false}
         style={{
           width: 280,
@@ -72,7 +82,6 @@ function AddCardTable() {
           margin: "10px",
           boxShadow: "0px 4px 10px rgba(0,0,0,0.2)",
           borderRadius: "15px",
-          backgroundColor: "#f5f5f5",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -130,6 +139,7 @@ function AddCardTable() {
         <Input
           placeholder="Job price"
           className="add-job-input"
+          type="number"
           onChange={(e) => {
             setAddCardInputs({
               ...addCardInputs,
@@ -141,7 +151,16 @@ function AddCardTable() {
           type="primary"
           className="add-job-input"
           onClick={() => {
-            addNewCard();
+            if (
+              !addCardInputs.jobTitle ||
+              !addCardInputs.jobDetails ||
+              addCardInputs.jobTalents.length === 0 ||
+              !addCardInputs.jobPrice
+            ) {
+              alert("Please fill all the inputs");
+            } else {
+              addNewCard();
+            }
           }}
         >
           Add

@@ -41,13 +41,14 @@ export const personSlice = createSlice({
       const jobIdToDelete = action.payload;
       state.myJobs = state.myJobs.filter((job) => job.id !== jobIdToDelete);
     },
-    addJob(state, action) {
-      state.myJobs.push(action.payload);
+    addCard(state, action) {
+      console.log(action.payload);
+      // state.myJobs = [...state.myJobs, action.payload];
     },
   },
 });
 
-export const { setPerson, setAuthenticated, setMyJobs, deleteJob, addJob } =
+export const { setPerson, setAuthenticated, setMyJobs, deleteJob, addCard } =
   personSlice.actions;
 
 export default personSlice.reducer;

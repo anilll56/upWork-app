@@ -18,31 +18,6 @@ const LoginUser = async (email, password, userType) => {
     });
 };
 
-const LoginfreelancerUser = async (email, password) => {
-  const response = await axios.post(`${url}/freelancerUserlogin`, {
-    email: email,
-    password: password,
-    remember: true,
-  });
-  if (response.data) {
-    localStorage.setItem("token", response.data.token);
-    localStorage.setItem("user", JSON.stringify(response.data[0]));
-    return response.data[0];
-  }
-};
-const LoginClientUser = async (email, password) => {
-  const response = await axios.post(`${url}/clienUserLogin`, {
-    email: email,
-    password: password,
-    remember: true,
-  });
-  if (response.data) {
-    localStorage.setItem("token", response.data.token);
-    localStorage.setItem("user", JSON.stringify(response.data[0]));
-    localStorage.setItem("Myjobs", JSON.stringify(response.data[1]));
-    return response.data[0];
-  }
-};
 const SignupfreelancerUser = async (name, email, password, talent, price) => {
   const response = await axios.post(`${url}/freelancerUserRegister`, {
     name: name,
@@ -55,7 +30,7 @@ const SignupfreelancerUser = async (name, email, password, talent, price) => {
     console.log(response.data);
     localStorage.setItem("user", JSON.stringify(response.data[0]));
     localStorage.setItem("jobs", JSON.stringify(response.data[1]));
-    return response;
+    return response[0];
   }
 };
 
@@ -279,19 +254,6 @@ const getAcceptedJobsForTheFreelancer = async (email, status) => {
 };
 
 const updateUser = async (name, email, userType, talent, price) => {
-  console.log(
-    "name:",
-    name,
-    "email:",
-    email,
-    "talent:",
-    userType,
-    "updateUser22222",
-    talent,
-    "price:",
-    price,
-    "usertype:"
-  );
   const response = await axios.post(`${url}/updateUser`, {
     name: name === undefined ? "" : name,
     email: email,
@@ -309,14 +271,40 @@ const complateTheJob = async (jobId) => {
   alert("İş tamamlandı");
   return response.data;
 };
+const getFreelancerUsers = async () => {
+  const response = await axios.get(`${url}/getFreelancerUsers`);
+  return response.data[0];
+};
+
+const findAndHireFreelancer = async (
+  jobId,
+  name,
+  email,
+  requesterInfo,
+  freelancerEmail
+) => {
+  const response = await axios.post(`${url}/findAndHireFreelancer`, {
+    jobId: jobId,
+    name: name,
+    email: email,
+    requesterInfo: requesterInfo,
+    freelancerEmail: freelancerEmail,
+  });
+  return response.data;
+};
+
+const getTheFreelancerJobByClientEmail = async (email) => {
+  const response = await axios.post(`${url}/getTheFreelancerJobByClientEmail`, {
+    email: email,
+  });
+  return response.data;
+};
 
 export {
-  LoginfreelancerUser,
   SignupfreelancerUser,
   SignupClientUser,
   getClientJobs,
   getTheFreelancerJob,
-  LoginClientUser,
   AddClientJob,
   getTheClientJobByEmail,
   getTheFreelancerJobFilter,
@@ -336,4 +324,7 @@ export {
   updateUser,
   hireUserForTheJob,
   complateTheJob,
+  getFreelancerUsers,
+  findAndHireFreelancer,
+  getTheFreelancerJobByClientEmail,
 };

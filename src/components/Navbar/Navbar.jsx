@@ -91,7 +91,7 @@ function Navbar() {
             navigate("/home");
           }}
         >
-          <h2>Upwork</h2>
+          <div className="navbar-left-side-logo">Upwork</div>
         </div>
         <div className="navbar-middle">
           <div className="navbar-middle-dropdown-content">
@@ -102,12 +102,20 @@ function Navbar() {
               }}
             >
               <a onClick={(e) => e.preventDefault()}>
-                <Space>
+                <Space className="navbar-middle-dropdown-content-space">
                   Find Work
                   <DownOutlined />
                 </Space>
               </a>
             </Dropdown>
+            <div
+              className="navbar-middle-dropdown-content-search"
+              onClick={() => {
+                navigate("/home/searchFreelancers");
+              }}
+            >
+              Search Freelancer
+            </div>
           </div>
         </div>
         <div className="navbar-right-side">
@@ -123,7 +131,7 @@ function Navbar() {
               }}
             >
               <a onClick={(e) => e.preventDefault()}>
-                <Space>
+                <Space className="navbar-personel-info-space">
                   {user?.user?.name}
                   <AiOutlineUser size={30} />
                 </Space>

@@ -46,8 +46,9 @@ function CardTable({ job }) {
       ApplyJob(job.id, userRedux.user.name, userEmail, ApplyJobInfo).then(
         (res) => {
           setTimeout(() => {
+            fetchJobs(userEmail, UserRole);
             window.location.reload();
-          }, 5000);
+          }, 2000);
           setOpenModalInfo(false);
         }
       );
@@ -76,7 +77,7 @@ function CardTable({ job }) {
         setTimeout(() => {
           fetchJobs(userEmail, UserRole);
           window.location.reload();
-        }, 2000);
+        }, 1000);
       });
     } else {
       updateTheFreelancerJob(
@@ -91,7 +92,7 @@ function CardTable({ job }) {
         setTimeout(() => {
           fetchJobs(userEmail, UserRole);
           window.location.reload();
-        }, 2000);
+        }, 1000);
       });
     }
   };
@@ -100,7 +101,7 @@ function CardTable({ job }) {
       setTimeout(() => {
         fetchJobs(userEmail, UserRole);
         window.location.reload();
-      }, 2000);
+      }, 1000);
     });
   };
 
@@ -109,7 +110,7 @@ function CardTable({ job }) {
       setTimeout(() => {
         fetchJobs(userEmail, UserRole);
         window.location.reload();
-      }, 2000);
+      }, 100);
     });
   };
 
@@ -118,7 +119,7 @@ function CardTable({ job }) {
       setTimeout(() => {
         fetchJobs(userEmail, UserRole);
         window.location.reload();
-      }, 2000);
+      }, 100);
     });
   };
 
@@ -127,7 +128,18 @@ function CardTable({ job }) {
       setTimeout(() => {
         fetchJobs(userEmail, UserRole);
         window.location.reload();
-      }, 2000);
+      }, 100);
+    });
+  };
+
+  const deleteJob = () => {
+    deleteTheJob(job.id, UserRole).then((res) => {
+      setTimeout(() => {
+        fetchJobs(UserRole, userEmail).then((res) => {
+          dispatch(setMyJobs(res.data));
+          window.location.reload();
+        });
+      }, 500);
     });
   };
 
@@ -138,13 +150,7 @@ function CardTable({ job }) {
           userEmail === job.email && (
             <div
               onClick={() => {
-                deleteTheJob(job.id, UserRole).then((res) => {
-                  setTimeout(() => {
-                    fetchJobs(UserRole, userEmail).then((res) => {
-                      dispatch(setMyJobs(res.data));
-                    });
-                  }, 1000);
-                });
+                deleteJob();
               }}
             >
               <AiOutlineClose size={15} />
@@ -247,7 +253,7 @@ function CardTable({ job }) {
         )}
       </Card>
       <Modal
-        title="update job"
+        title="Update job"
         open={openModal}
         onCancel={() => {
           setOpenModal(false);

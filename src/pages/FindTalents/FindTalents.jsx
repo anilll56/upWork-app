@@ -39,9 +39,6 @@ function FindTalents() {
       setFilteredJobs(filteredJobs);
     });
   }, [selectedItems]);
-  console.log(filteredJobs, "filteredJobs");
-  console.log(clientJobs, "clientJobs");
-  console.log(selectedItemNoSpace, "selectedItemNoSpace");
   return (
     <div>
       <div className="find-talent-input">

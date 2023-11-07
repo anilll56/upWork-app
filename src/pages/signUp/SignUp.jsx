@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 
 function SignUp() {
   const [userType, setUserType] = useState("freelancer");
-  const [rating, setRating] = useState(3);
 
   const navigave = useNavigate();
   const [signUpInputs, setSignUpInputs] = useState({
@@ -17,40 +16,57 @@ function SignUp() {
     password: "",
     confirmPassword: "",
     skills: [],
-    price: rating,
+    price: "",
   });
   const handleUserTypeChange = (event) => {
     setUserType(event.target.value);
   };
-  const HnadleRatingChange = (event) => {
-    setRating(event);
-  };
+
   const signup = () => {
     if (signUpInputs.password !== signUpInputs.confirmPassword) {
       return alert("passwords don't match");
     } else {
       if (userType === "client") {
-        SignupClientUser(
-          signUpInputs.name,
-          signUpInputs.email,
-          signUpInputs.password
-        ).then((res) => {
-          navigave("/login");
-        });
+        if (
+          signUpInputs.name === "" ||
+          signUpInputs.email === "" ||
+          signUpInputs.password === "" ||
+          signUpInputs.confirmPassword === ""
+        ) {
+          return alert("please fill all the inputs");
+        } else {
+          SignupClientUser(
+            signUpInputs.name,
+            signUpInputs.email,
+            signUpInputs.password
+          ).then((res) => {
+            navigave("/login");
+          });
+        }
       } else {
-        SignupfreelancerUser(
-          signUpInputs.name,
-          signUpInputs.email,
-          signUpInputs.password,
-          signUpInputs.skills,
-          signUpInputs.price
-        ).then((res) => {
-          navigave("/login");
-        });
+        if (
+          signUpInputs.name === "" ||
+          signUpInputs.email === "" ||
+          signUpInputs.password === "" ||
+          signUpInputs.confirmPassword === "" ||
+          signUpInputs.skills.length === 0
+        ) {
+          return alert("please fill all the inputs");
+        } else {
+          SignupfreelancerUser(
+            signUpInputs.name,
+            signUpInputs.email,
+            signUpInputs.password,
+            signUpInputs.skills,
+            signUpInputs.price
+          ).then((res) => {
+            navigave("/login");
+          });
+        }
       }
     }
   };
-  console.log(signUpInputs);
+  console.log(signUpInputs.price, "price");
   const optionsNames = useSelector((state) => state.person.optionsNames);
   const options = optionsNames.map((option) => {
     return {
@@ -151,6 +167,7 @@ function SignUp() {
           {userType === "freelancer" && (
             <div className="sign-up-input-cont">
               <Select
+                size="large"
                 mode="multiple"
                 allowClear
                 style={{
@@ -168,9 +185,18 @@ function SignUp() {
             </div>
           )}
           {userType === "freelancer" && (
-            <div className="sign-up-price-cont">
-              <div>Choose your price</div>
-              <Rate value={rating} onChange={HnadleRatingChange} />
+            <div className="sign-up-input-cont">
+              <Input
+                size="large"
+                type="number"
+                value={signUpInputs.price}
+                onChange={(event) => {
+                  setSignUpInputs({
+                    ...signUpInputs,
+                    price: event.target.value,
+                  });
+                }}
+              />
             </div>
           )}
           <div className="buttons-div">

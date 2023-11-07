@@ -8,6 +8,9 @@ import AddCardTable from "../../components/Card/AddCardTable";
 import {
   getAcceptedJobsForTheFreelancer,
   updateUser,
+  fetchJobs,
+  getTheFreelancerJob,
+  getTheFreelancerJobByClientEmail,
 } from "../../api/HandleApi";
 
 function Profile() {
@@ -17,9 +20,10 @@ function Profile() {
   const Myjobs = localStorage.getItem("Myjobs");
   const parsedDataMyJob = JSON.parse(Myjobs);
   const currentJobs = parsedDataMyJob?.filter(
-    (job) => job["work-status"] === "aviable"
+    (job) => job["work-status"] === "available"
   );
   const [getAcceptedJobs, setGetAcceptedJobs] = useState([]);
+  const [getHiredFreelancers, setGetHiredFreelancers] = useState([]);
   const [pendingJobs, setPendingJobs] = useState([]);
   const [getCompletedJobs, setGetCompletedJobs] = useState([]);
   const [openModal, setOpenModal] = useState(false);
@@ -46,7 +50,6 @@ function Profile() {
     price: reduxUser?.user?.price || "",
     skills: reduxUser?.user?.talent || [],
   });
-  console.log(reduxUser, "reduxUser");
 
   useEffect(() => {
     if (reduxUser?.user?.role === "client") {
@@ -59,6 +62,13 @@ function Profile() {
       setGetCompletedJobs(
         parsedDataMyJob?.filter((job) => job["work-status"] === "completed")
       );
+      getTheFreelancerJobByClientEmail(userMail).then((res) => {
+        const filteredJobs = res.data.filter(
+          (job) => job["client-email"] === userMail
+        );
+        //  setGetAcceptedJobs([...getAcceptedJobs, ...filteredJobs])
+        setGetHiredFreelancers(filteredJobs);
+      });
     } else if (reduxUser?.user?.role === "freelancer") {
       getAcceptedJobsForTheFreelancer(reduxUser?.user?.email, "accepted").then(
         (res) => {
@@ -80,15 +90,20 @@ function Profile() {
       console.log(modalInputValue);
     }
   };
-  console.log(updateProfileInputs.userType, "updateProfileInputs");
   const updateProfile = () => {
     if (reduxUser?.user?.role === "client") {
       updateUser(updateProfileInputs.name, userMail, userType).then((res) => {
-        console.log(res);
+        setTimeout(() => {
+          fetchJobs(userMail, userType);
+          window.location.reload();
+        }, 1000);
       });
     } else if (reduxUser?.user?.role === "freelancer") {
       updateUser(updateProfileInputs.name, userMail, userType).then((res) => {
-        console.log(res);
+        setTimeout(() => {
+          fetchJobs(userMail, userType);
+          window.location.reload();
+        }, 1000);
       });
     }
   };
@@ -101,7 +116,7 @@ function Profile() {
               <div>
                 <Avatar
                   size={64}
-                  src={<AiOutlineUser color="grey" size={64} />}
+                  src={<AiOutlineUser color="#108a00" size={64} />}
                 />
               </div>
               <div>
@@ -210,16 +225,17 @@ function Profile() {
                 <AvailableJobsCont jobs={pendingJobs} />
               </div>
             )}
-            {getAcceptedJobs?.length > 0 && (
-              <div>
-                <div>Accepted Jobs</div>
-                <AvailableJobsCont jobs={getAcceptedJobs} />
-              </div>
-            )}
+
             {getAcceptedJobs?.length > 0 && (
               <div>
                 <div>My Applications</div>
                 <AvailableJobsCont jobs={getAcceptedJobs} />
+              </div>
+            )}
+            {getHiredFreelancers?.length > 0 && (
+              <div>
+                <div>Hired Freelancers Jobs</div>
+                <AvailableJobsCont jobs={getHiredFreelancers} />
               </div>
             )}
             {getCompletedJobs?.length > 0 && (
@@ -278,7 +294,9 @@ function Profile() {
           <Button
             type="primary"
             className="change-password-input"
-            onClick={changePassword()}
+            onClick={() => {
+              changePassword();
+            }}
           >
             Update
           </Button>

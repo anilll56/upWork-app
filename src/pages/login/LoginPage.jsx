@@ -3,7 +3,6 @@ import "./LoginPage.css";
 import { CiUser } from "react-icons/ci";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { LoginClientUser, LoginfreelancerUser } from "../../api/HandleApi";
 import { useSelector, useDispatch } from "react-redux";
 import { setPerson } from "../../redux/personSlice";
 import { Form, Checkbox } from "antd";

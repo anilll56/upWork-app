@@ -7,6 +7,7 @@ import Profile from "../pages/profile/Profile";
 import FindTalents from "../pages/FindTalents/FindTalents";
 import FindWorks from "../pages/FindWorks/FindWorks";
 import Navbar from "../components/Navbar/Navbar";
+import SearchFreelancers from "../pages/searchFreelancers/SearchFreelancers";
 
 function RoutePage() {
   return (
@@ -26,6 +27,7 @@ function RoutePage() {
         <Route path="/home/profile" element={<Profile />} />
         <Route path="/home/findTalents" element={<FindTalents />} />
         <Route path="/home/findWorks" element={<FindWorks />} />
+        <Route path="/home/searchFreelancers" element={<SearchFreelancers />} />
       </Routes>
     </div>
   );

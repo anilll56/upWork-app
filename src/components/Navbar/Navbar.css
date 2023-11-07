@@ -34,10 +34,49 @@
 }
 .navbar-middle-dropdown-content {
   margin-left: 10px;
+  display: flex;
+  width: 40%;
+  justify-content: space-evenly;
 }
 .navbar-personel-info {
   display: flex;
   align-items: center;
   align-content: center;
   margin-right: 20px;
+}
+.navbar-left-side-logo {
+  font-size: 30px;
+  font-weight: bold;
+  color: #108a00;
+  transition-duration: 400ms;
+}
+.navbar-left-side-logo:hover {
+  cursor: pointer;
+  color: #449a27;
+}
+.navbar-middle-dropdown-content-space {
+  font-size: 14px;
+  font-weight: bold;
+}
+.navbar-middle-dropdown-content-space:hover {
+  cursor: pointer;
+  color: #108a00;
+}
+.navbar-personel-info-space {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+  transition-duration: 500ms;
+}
+.navbar-personel-info-space:hover {
+  cursor: pointer;
+  color: #108a00;
+}
+.navbar-middle-dropdown-content-search {
+  font-size: 15px;
+  font-weight: 500;
+  transition-duration: 500ms;
+}
+.navbar-middle-dropdown-content-search:hover {
+  color: #108a00;
 }

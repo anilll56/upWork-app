@@ -3,8 +3,6 @@
 }
 .profile-container {
   display: flex;
-  margin-top: 2rem;
-  margin-left: 2rem;
 }
 .profile-righth-side {
   width: 75%;
@@ -19,4 +17,14 @@
 .profile-left-side {
   display: flex;
   width: 20%;
+  padding: 10px;
+  box-shadow: 5px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100%;
+}
+.profile-change-password {
+  color: #108a00;
+}
+.profile-change-password:hover {
+  cursor: pointer;
+  color: #449a27;
 }
