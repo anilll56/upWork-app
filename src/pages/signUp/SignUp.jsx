@@ -190,6 +190,7 @@ function SignUp() {
                 size="large"
                 type="number"
                 value={signUpInputs.price}
+                placeholder="type your price "
                 onChange={(event) => {
                   setSignUpInputs({
                     ...signUpInputs,

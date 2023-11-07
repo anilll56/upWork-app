@@ -7,6 +7,7 @@ import { setAuthenticated, setPerson, setMyJobs } from "./redux/personSlice";
 
 import RoutePage from "./route/RoutePage";
 import {
+  getClientByEmail,
   getTheClientJobByEmail,
   getTheFreelancerJobByEmail,
 } from "./api/HandleApi";
@@ -39,6 +40,9 @@ function App() {
     const user = JSON.parse(localStorage.getItem("user"));
     fetchJobs();
     if (user) {
+      getClientByEmail(user.email).then((res) => {
+        localStorage.setItem("user", JSON.stringify(res));
+      });
       dispatch(setPerson({ user: user }));
       dispatch(setAuthenticated(true));
     } else {

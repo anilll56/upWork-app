@@ -300,6 +300,15 @@ const getTheFreelancerJobByClientEmail = async (email) => {
   return response.data;
 };
 
+const getClientByEmail = async (email) => {
+  const response = await axios.post(`${url}/getClientByEmail`, {
+    email: email,
+  });
+  localStorage.setItem("user", JSON.stringify(response.data[0]));
+
+  return response.data[0];
+};
+
 export {
   SignupfreelancerUser,
   SignupClientUser,
@@ -327,4 +336,5 @@ export {
   getFreelancerUsers,
   findAndHireFreelancer,
   getTheFreelancerJobByClientEmail,
+  getClientByEmail,
 };

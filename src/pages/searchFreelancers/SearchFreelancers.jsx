@@ -23,7 +23,10 @@ function SearchFreelancers() {
     };
   });
 
-  const HireFreelancer = (user) => {};
+  const HireFreelancer = (user) => {
+    console.log(user, sendInfo);
+    setOpenModal(false);
+  };
 
   const stringSelectedItems = selectedItems.toString();
   const selectedItemNoSpace = stringSelectedItems.replace(/\s/g, "");
@@ -158,7 +161,15 @@ function SearchFreelancers() {
                         setOpenModal(true);
                       }}
                     >
-                      <AiOutlineCheckCircle size={40} />
+                      <Button
+                        style={{
+                          backgroundColor: "transparent",
+                          border: "none",
+                          outline: "none",
+                        }}
+                      >
+                        <AiOutlineCheckCircle size={40} />
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -189,7 +200,7 @@ function SearchFreelancers() {
             margin: "10px",
           }}
           onClick={() => {
-            hireUserForTheJob(user);
+            HireFreelancer(user);
           }}
         >
           Hire

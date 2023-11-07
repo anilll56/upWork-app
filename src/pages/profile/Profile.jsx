@@ -9,7 +9,7 @@ import {
   getAcceptedJobsForTheFreelancer,
   updateUser,
   fetchJobs,
-  getTheFreelancerJob,
+  getClientByEmail,
   getTheFreelancerJobByClientEmail,
 } from "../../api/HandleApi";
 
@@ -96,6 +96,9 @@ function Profile() {
         setTimeout(() => {
           fetchJobs(userMail, userType);
           window.location.reload();
+          getClientByEmail(userMail).then((res) => {
+            localStorage.setItem("user", JSON.stringify(res));
+          });
         }, 1000);
       });
     } else if (reduxUser?.user?.role === "freelancer") {
